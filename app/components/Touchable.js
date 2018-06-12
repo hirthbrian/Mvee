@@ -14,11 +14,11 @@ export default class Touchable extends React.Component {
     }
 
     onPressIn = () => {
-        this.touchableRef.transitionTo({ scale: 0.9 });
+        this.touchableRef.transitionTo({ scale: 0.9, opacity: 0.75 });
     };
 
     onPressOut = () => {
-        this.touchableRef.transitionTo({ scale: 1 });
+        this.touchableRef.transitionTo({ scale: 1, opacity: 1 });
     };
 
     render() {
@@ -27,11 +27,11 @@ export default class Touchable extends React.Component {
             <TouchableWithoutFeedback
                 onPressIn={this.onPressIn}
                 onPressOut={this.onPressOut}
-                style={this.props.containerStyle}
                 {...this.props}
             >
                 <AView
                     ref={(ref) => { this.touchableRef = ref }}
+                    style={this.props.containerStyle}
                 >
                     {this.props.children}
                 </AView>

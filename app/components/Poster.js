@@ -2,22 +2,16 @@ import React from 'react';
 import {
     StyleSheet,
     Text,
-    View,
-    FlatList,
-    TextInput,
-    Image,
     Dimensions,
-    TouchableHighlight,
     ImageBackground
 } from 'react-native';
 
 import Colors from '../config/Colors';
 import LinearGradient from 'react-native-linear-gradient';
-import moment from 'moment';
 
 import Touchable from './Touchable';
 
-export default class MoviePoster extends React.Component {
+export default class Poster extends React.Component {
 
     constructor(props) {
         super(props);
@@ -34,7 +28,7 @@ export default class MoviePoster extends React.Component {
         const { width } = Dimensions.get('window');
 
         const posterWidth = (width - (4 * 3)) / 3;
-        const posterHeight = posterWidth * 1.5;
+        const posterHeight = posterWidth * 1.55;
 
         return (
             <Touchable

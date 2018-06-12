@@ -8,7 +8,7 @@ import {
 import { View as AView } from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class MovieList extends React.Component {
+export default class SearchBar extends React.Component {
 
     constructor(props) {
         super(props);
@@ -32,21 +32,22 @@ export default class MovieList extends React.Component {
                     this.searchInput.focus();
                 }}
                 style={{
-                    // width: 50,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: Colors.red,
-                    paddingHorizontal: 15,
-                    paddingVertical: 10,
-                    margin: 4,
+                    backgroundColor: Colors.blue,
+                    borderColor: Colors.white,
+                    borderWidth: 1,
+                    paddingHorizontal: 8,
+                    paddingVertical: 5,
+                    marginHorizontal: 5,
                     borderRadius: 4,
                 }}
             >
                 <TouchableWithoutFeedback
-                    // onPress={() => {
-                    //     this.setState({ showSearchInput: true });
-                    //     this.searchBar.transitionTo({ width: width - 4 - 4 }, 300, 'ease');
-                    // }}
+                    onPress={() => {
+                        this.setState({ showSearchInput: true });
+                        this.searchBar.transitionTo({ width: width - 4 - 4 }, 600, 'ease');
+                    }}
                 >
                     <Icon name="search" size={18} color={Colors.white} />
                 </TouchableWithoutFeedback>
@@ -58,8 +59,7 @@ export default class MovieList extends React.Component {
                         onChangeText={(text) => this.setState({ searchText: text })}
                         onEndEditing={() => this.props.onSearch(this.state.searchText)}
                         value={this.state.searchText}
-                        placeholder={'Search for a Movie...'}
-                        placeholderTextColor={'#F7F7F7'}
+                        placeholderTextColor={Colors.white}
                         selectionColor={Colors.white}
                         underlineColorAndroid={Colors.transparent}
                         style={{

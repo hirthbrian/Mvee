@@ -1,31 +1,36 @@
 import React from 'react';
 import {
     View,
-    ImageBackground,
 } from 'react-native';
 
 import { createStackNavigator } from 'react-navigation';
 
 import Colors from './Colors';
 
-import MovieList from '../components/MovieList';
-import MovieDetails from '../components/MovieDetails';
+import Movies from '../components/Movies';
+import Movie from '../components/Movie';
+import SearchBar from '../components/SearchBar';
 
 export default RootStack = createStackNavigator({
-    MovieList: {
-        screen: MovieList,
-        navigationOptions: ({ navigation }) => ({
+    Movies: {
+        screen: Movies,
+        navigationOptions: ({navigation}) => ({
             title: 'Mvee',
+            headerLeft: (
+                <SearchBar
+                    onSearch={navigation.state.params && navigation.state.params.onSearch}
+                />
+            ),
             headerStyle: {
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.blue,
             },
         })
     },
-    MovieDetails: {
-        screen: MovieDetails,
-        navigationOptions: ({ navigation }) => ({
+    Movie: {
+        screen: Movie,
+        navigationOptions: () => ({
             headerTransparent: true,
-            headerBackground: <View style={{ flex: 1, backgroundColor: 'transparent' }} />,
+            headerBackground: <View style={{ flex: 1, backgroundColor: Colors.transparent }} />,
             headerStyle: {
                 borderBottomWidth: 0,
                 elevation: 0,

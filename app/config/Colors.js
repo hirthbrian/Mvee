@@ -1,14 +1,10 @@
 export default Colors = {
-
-    transparent:    'transparent',
-    
+    grey:           '#C7C7C7',
+    yellow:         '#F3FFBD',
+    blue:           '#3C6682',
+    orange:         '#f5af4d',
+    brown:          '#473f41',
     white:          '#FFFFFF',
     black:          '#000000',
-
-    grey:           '#C7C7C7',
-    blue:           '#247BA0',
-    green:          '#70C1B3',
-    lightGreen:     '#B2DBBF',
-    yellow:         '#F3FFBD',
-    red:            '#FF1654',
+    transparent:    'transparent',
 };
