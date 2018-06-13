@@ -8,6 +8,7 @@ import moment from 'moment';
 import Colors from '../config/Colors';
 import API from '../config/API';
 import Poster from './Poster';
+import Label from './Label';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +23,9 @@ export default class Home extends React.Component {
 
     this.state = {
       data: [],
+      popular: [],
+      upcoming: [],
+      nowPlaying: [],
       page: 1,
       searchText: null,
     };
@@ -31,7 +35,25 @@ export default class Home extends React.Component {
 
   componentWillMount() {
     this.props.navigation.setParams({ onSearch: this.onSearch });
-    this.search('James Bond');
+    // this.search('James Bond');
+
+    API.getPopularMovies((result) => {
+      if (result.length !== 0) {
+        this.setState({ popular: result });
+      }
+    });
+
+    API.getUpcomingMovies((result) => {
+      if (result.length !== 0) {
+        this.setState({ upcoming: result });
+      }
+    });
+
+    API.getNowPlayingMovies((result) => {
+      if (result.length !== 0) {
+        this.setState({ nowPlaying: result });
+      }
+    });
   }
 
   onSearch = (text) => {
@@ -50,7 +72,7 @@ export default class Home extends React.Component {
   }
 
   search = (query) => {
-    API.getMovies(query, this.state.page, (result) => {
+    API.getMovies(query, (result) => {
       if (result.length !== 0) {
         const results = this.state.data.concat(result);
         this.setState({ data: results });
@@ -75,12 +97,40 @@ export default class Home extends React.Component {
     );
   };
 
+  renderGenericList(title, list) {
+    return (
+      <View>
+        <Label
+          fontWeight={300}
+          style={{
+            fontSize: 28,
+            color: Colors.white,
+            padding: 10,
+          }}
+        >
+          {title}
+        </Label>
+        <FlatList
+          horizontal
+          data={list}
+          renderItem={this.renderItem}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => `movie-popular-${index}`}
+        />
+      </View>
+    );
+  }
+
   render() {
     return (
       <View
         style={styles.container}
       >
-        <FlatList
+
+        {this.renderGenericList('Popular', this.state.popular)}
+        {this.renderGenericList('Upcoming', this.state.upcoming)}
+        {this.renderGenericList('Now Playing', this.state.nowPlaying)}
+        {/* <FlatList
           data={this.state.data}
           numColumns={3}
           renderItem={this.renderItem}
@@ -88,7 +138,7 @@ export default class Home extends React.Component {
           // onEndReached={this.onEndReached}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => `movie-item-${index}`}
-        />
+        /> */}
       </View>
     );
   }

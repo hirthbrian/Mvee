@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Text,
   Dimensions,
   ImageBackground,
 } from 'react-native';
@@ -8,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import Colors from '../config/Colors';
 import Touchable from './Touchable';
+import Label from './Label';
 
 export default class Poster extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ export default class Poster extends React.Component {
               justifyContent: 'flex-end',
             }}
           >
-            <Text
+            <Label
               style={{
                 padding: 5,
                 fontSize: 12,
@@ -62,7 +62,7 @@ export default class Poster extends React.Component {
               }}
             >
               {`${title} (${year})`}
-            </Text>
+            </Label>
           </LinearGradient>
         </ImageBackground>
       </Touchable>

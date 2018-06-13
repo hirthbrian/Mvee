@@ -10,8 +10,32 @@ export default class API {
       });
   }
 
-  static getSimilarMovies(movieId, page = 1, callback) {
+  static getSimilarMovies(movieId, callback, page = 1) {
     return fetch(`${baseUrl}/movie/${movieId}/similar?api_key=${apiKey}&page=${page}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson.results);
+      });
+  }
+
+  static getPopularMovies(callback, page = 1) {
+    return fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&page=${page}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson.results);
+      });
+  }
+
+  static getUpcomingMovies(callback, page = 1) {
+    return fetch(`${baseUrl}/movie/upcoming?api_key=${apiKey}&page=${page}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson.results);
+      });
+  }
+
+  static getNowPlayingMovies(callback, page = 1) {
+    return fetch(`${baseUrl}/movie/now_playing?api_key=${apiKey}&page=${page}`)
       .then(response => response.json())
       .then((responseJson) => {
         callback(responseJson.results);

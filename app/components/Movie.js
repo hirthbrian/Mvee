@@ -4,7 +4,6 @@ import {
   FlatList,
   ImageBackground,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import moment from 'moment';
@@ -14,6 +13,7 @@ import StarRating from 'react-native-star-rating';
 import API from '../config/API';
 import Colors from '../config/Colors';
 import Poster from './Poster';
+import Label from './Label';
 
 const styles = StyleSheet.create({
   detailBlock: {
@@ -46,7 +46,7 @@ export default class Movie extends React.Component {
 
     API.getMovie(params.movie.id, (result) => {
       this.setState({ movie: result });
-      API.getSimilarMovies(result.id, 1, (similarResult) => {
+      API.getSimilarMovies(result.id, (similarResult) => {
         this.setState({ similarMovies: similarResult });
       });
     });
@@ -75,11 +75,11 @@ export default class Movie extends React.Component {
         paddingVertical: 10,
       }}
     >
-      <Text
+      <Label
         style={[styles.title, { paddingHorizontal: 15 }]}
       >
         Similar Movies
-      </Text>
+      </Label>
 
       <FlatList
         horizontal
@@ -110,7 +110,14 @@ export default class Movie extends React.Component {
           backgroundColor: Colors.brown,
         }}
         source={{ uri: `https://image.tmdb.org/t/p/w780/${movie.backdrop_path}` }}
-      />
+      >
+        <LinearGradient
+          colors={[Colors.transparent, Colors.brown]}
+          style={{
+            flex: 1,
+          }}
+        />
+      </ImageBackground>
     );
   };
 
@@ -124,8 +131,7 @@ export default class Movie extends React.Component {
         outputScaleValue={7}
         renderBackground={this.renderHeader}
       >
-        <LinearGradient
-          colors={[Colors.transparent, Colors.brown]}
+        <View
           style={{
             marginTop: -75,
             paddingHorizontal: 15,
@@ -133,15 +139,17 @@ export default class Movie extends React.Component {
             justifyContent: 'flex-end',
           }}
         >
-          <Text
+          <Label
+            fontWeight={300}
             style={{
               fontSize: 38,
               color: Colors.white,
             }}
           >
             {movie.title}
-          </Text>
-          <Text
+          </Label>
+          <Label
+            fontWeight={300}
             numberOfLines={1}
             style={{
               fontSize: 16,
@@ -149,49 +157,49 @@ export default class Movie extends React.Component {
             }}
           >
             {movie.tagline}
-          </Text>
-        </LinearGradient>
+          </Label>
+        </View>
         <View
           style={styles.detailBlock}
         >
-          <Text
+          <Label
             style={styles.title}
           >
             Details
-          </Text>
+          </Label>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}
           >
-            <Text
+            <Label
               style={{
                 color: Colors.white,
                 fontSize: 12,
               }}
             >
               {moment(movie.release_date).format('MMMM Do YYYY')}
-            </Text>
-            <Text
+            </Label>
+            <Label
               style={{
                 color: Colors.white,
                 fontSize: 12,
               }}
             >
               {`${movie.runtime} mins`}
-            </Text>
+            </Label>
           </View>
         </View>
 
         <View
           style={styles.detailBlock}
         >
-          <Text
+          <Label
             style={styles.title}
           >
             Rating
-          </Text>
+          </Label>
           <StarRating
             disabled
             starSize={32}
@@ -208,16 +216,16 @@ export default class Movie extends React.Component {
         <View
           style={styles.detailBlock}
         >
-          <Text
+          <Label
             style={styles.title}
           >
             Synopsis
-          </Text>
-          <Text
+          </Label>
+          <Label
             style={styles.description}
           >
             {movie.overview}
-          </Text>
+          </Label>
         </View>
 
         {this.renderSimilarMovies()}
