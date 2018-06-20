@@ -1,7 +1,7 @@
 const baseUrl = 'https://api.themoviedb.org/3';
-const apiKey = '';
+const apiKey = '98cfd76c9dda6fa371610d72f2486cff';
 const omdbUrl = 'https://www.omdbapi.com/';
-const omdbKey = '';
+const omdbKey = '87a63633';
 
 export default class API {
   static getMovies(query, page, callback) {
@@ -78,6 +78,14 @@ export default class API {
 
   static getPerson(personId, callback) {
     return fetch(`${baseUrl}/person/${personId}?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson);
+      });
+  }
+
+  static getPersonTaggedImages(personId, callback) {
+    return fetch(`${baseUrl}/person/${personId}/tagged_images?api_key=${apiKey}`)
       .then(response => response.json())
       .then((responseJson) => {
         callback(responseJson);
