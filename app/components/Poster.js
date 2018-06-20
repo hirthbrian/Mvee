@@ -26,26 +26,24 @@ export default class Poster extends React.Component {
     } = this.props;
     const { width } = Dimensions.get('window');
 
-    const posterWidth = (width - (4 * 3)) / 3;
+    const posterWidth = width / 3;
     const posterHeight = posterWidth * 1.55;
 
     return (
       <Touchable
         onPress={onPress}
         containerStyle={{
-          margin: 2,
           overflow: 'hidden',
-          borderRadius: 2,
+          borderRadius: 4,
         }}
       >
-
         <ImageBackground
           style={{
             width: posterWidth,
             height: posterHeight,
             backgroundColor: Colors.blue,
           }}
-          source={{ uri: posterUrl }}
+          source={{ uri: `https://image.tmdb.org/t/p/w185/${posterUrl}` }}
         >
           <LinearGradient
             colors={[Colors.transparent, Colors.transparent, Colors.black]}
@@ -73,6 +71,6 @@ export default class Poster extends React.Component {
 Poster.propTypes = {
   onPress: PropTypes.func.isRequired,
   posterUrl: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   year: PropTypes.string.isRequired,
 };

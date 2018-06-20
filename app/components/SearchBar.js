@@ -14,7 +14,7 @@ export default class SearchBar extends React.Component {
     super(props);
 
     this.state = {
-      showSearchInput: true,
+      showSearchInput: false,
       searchText: '',
     };
   }
@@ -33,19 +33,16 @@ export default class SearchBar extends React.Component {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.red,
           borderColor: Colors.white,
-          borderWidth: 1,
-          paddingHorizontal: 8,
+          borderBottomWidth: this.state.showSearchInput ? 2 : 0,
           paddingVertical: 5,
-          marginHorizontal: 5,
-          borderRadius: 4,
         }}
       >
         <TouchableWithoutFeedback
           onPress={() => {
             this.setState({ showSearchInput: true });
-            this.searchBar.transitionTo({ width: width - 4 - 4 }, 600, 'ease');
+            this.searchBar.transitionTo({ width: width - 50 }, 600, 'ease');
           }}
         >
           <Icon name="search" size={18} color={Colors.white} />

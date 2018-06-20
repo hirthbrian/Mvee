@@ -11,7 +11,7 @@ export default class Touchable extends React.Component {
   }
 
   onPressIn = () => {
-    this.touchableRef.transitionTo({ scale: 0.9, opacity: 0.75 });
+    this.touchableRef.transitionTo({ scale: 0.95, opacity: 0.5 }, 50);
   };
 
   onPressOut = () => {

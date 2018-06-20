@@ -1,5 +1,7 @@
 const baseUrl = 'https://api.themoviedb.org/3';
-const apiKey = '98cfd76c9dda6fa371610d72f2486cff';
+const apiKey = '';
+const omdbUrl = 'https://www.omdbapi.com/';
+const omdbKey = '';
 
 export default class API {
   static getMovies(query, page, callback) {
@@ -42,8 +44,40 @@ export default class API {
       });
   }
 
+  static getMovieCredits(movieId, callback) {
+    return fetch(`${baseUrl}/movie/${movieId}/credits?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson);
+      });
+  }
+
+  static getPeopleCredits(personId, callback) {
+    return fetch(`${baseUrl}/person/${personId}/combined_credits?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson);
+      });
+  }
+
   static getMovie(movieId, callback) {
     return fetch(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson);
+      });
+  }
+
+  static getMovieRatings(movieImdbId, callback) {
+    return fetch(`${omdbUrl}?apikey=${omdbKey}&i=${movieImdbId}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson.Ratings);
+      });
+  }
+
+  static getPerson(personId, callback) {
+    return fetch(`${baseUrl}/person/${personId}?api_key=${apiKey}`)
       .then(response => response.json())
       .then((responseJson) => {
         callback(responseJson);
