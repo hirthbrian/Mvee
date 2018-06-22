@@ -52,6 +52,14 @@ export default class API {
       });
   }
 
+  static getMovieVideos(movieId, callback) {
+    return fetch(`${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then((responseJson) => {
+        callback(responseJson.results);
+      });
+  }
+
   static getPeopleCredits(personId, callback) {
     return fetch(`${baseUrl}/person/${personId}/combined_credits?api_key=${apiKey}`)
       .then(response => response.json())

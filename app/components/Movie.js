@@ -3,18 +3,25 @@ import {
   Dimensions,
   StatusBar,
   Image,
+  Linking,
+  TouchableWithoutFeedback,
   ImageBackground,
   StyleSheet,
   View,
+  Modal,
+  FlatList,
 } from 'react-native';
 import moment from 'moment';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import API from '../config/API';
 import Colors from '../config/Colors';
 import Label from './Label';
 import MovieList from './MovieList';
 import PersonList from './PersonList';
+import Touchable from './Touchable';
 
 const styles = StyleSheet.create({
   detailBlock: {
@@ -43,16 +50,22 @@ export default class Movie extends React.Component {
   constructor(props) {
     super(props);
 
+    const { width } = Dimensions.get('window');
+
     this.state = {
       movie: {},
       cast: [],
       crew: [],
       ratings: [],
       similarMovies: [],
+      videos: [],
+      creditWidth: width / 4,
+      creditHeight: (width / 4) * 1.55,
+      showImageViewer: false,
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { params } = this.props.navigation.state;
 
     API.getMovie(params.movie.id, (result) => {
@@ -69,7 +82,14 @@ export default class Movie extends React.Component {
       API.getSimilarMovies(result.id, (similarResult) => {
         this.setState({ similarMovies: similarResult });
       });
+      API.getMovieVideos(result.id, (videosResult) => {
+        this.setState({ videos: videosResult });
+      });
     });
+  }
+
+  toggleImageViewer = () => {
+    this.setState({ showImageViewer: !this.state.showImageViewer });
   }
 
   goToDetails = movie => () => {
@@ -85,7 +105,7 @@ export default class Movie extends React.Component {
     const { movie } = this.state;
 
     return (
-      <ImageBackground
+      <Image
         style={{
           width,
           height: MAX_HEADER_HEIGHT,
@@ -96,6 +116,44 @@ export default class Movie extends React.Component {
       />
     );
   };
+
+  renderVideos = (data) => {
+    const video = data.item;
+
+    return (
+      <Touchable
+        onPress={() => {
+          Linking.openURL(`https://www.youtube.com/watch?v=${video.key}`);
+        }}
+      >
+        <Image
+          style={{
+            width: 160,
+            height: 90,
+            borderRadius: 4,
+            justifyContent: 'flex-end',
+          }}
+          source={{ uri: `https://img.youtube.com/vi/${video.key}/hqdefault.jpg` }}
+        />
+      </Touchable>
+    );
+  }
+
+  renderImageViewer = () => (
+    <Modal
+      transparent
+      animationType="fade"
+      onRequestClose={this.toggleImageViewer}
+      visible={this.state.showImageViewer}
+    >
+      <ImageViewer
+        renderIndicator={() => { }}
+        onClick={this.toggleImageViewer}
+        onSwipeDown={this.toggleImageViewer}
+        imageUrls={[{ url: `https://image.tmdb.org/t/p/w780/${this.state.movie.poster_path}` }]}
+      />
+    </Modal>
+  )
 
   render() {
     const { movie } = this.state;
@@ -122,29 +180,50 @@ export default class Movie extends React.Component {
               style={{
                 flex: 1,
                 paddingHorizontal: 10,
-                paddingVertical: 5,
-                justifyContent: 'flex-end',
+                flexDirection: 'row',
+                alignItems: 'flex-end',
               }}
             >
-              <Label
-                fontWeight={200}
+              <TouchableWithoutFeedback
+                onPress={this.toggleImageViewer}
+              >
+                <Image
+                  style={{
+                    borderRadius: 4,
+                    width: this.state.creditWidth,
+                    height: this.state.creditHeight,
+                    backgroundColor: Colors.blue,
+                  }}
+                  source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
+                />
+              </TouchableWithoutFeedback>
+              <View
                 style={{
-                  fontSize: 38,
-                  color: Colors.white,
+                  flex: 1,
+                  paddingLeft: 10,
                 }}
               >
-                {movie.title}
-              </Label>
-              <Label
-                fontWeight={200}
-                numberOfLines={1}
-                style={{
-                  fontSize: 16,
-                  color: Colors.white,
-                }}
-              >
-                {movie.tagline}
-              </Label>
+                <Label
+                  fontWeight={200}
+                  numberOfLines={3}
+                  style={{
+                    fontSize: 38,
+                    color: Colors.white,
+                  }}
+                >
+                  {movie.title}
+                </Label>
+                <Label
+                  fontWeight={200}
+                  numberOfLines={1}
+                  style={{
+                    fontSize: 16,
+                    color: Colors.white,
+                  }}
+                >
+                  {movie.tagline}
+                </Label>
+              </View>
             </LinearGradient>
           )}
         >
@@ -185,64 +264,51 @@ export default class Movie extends React.Component {
             </View>
           </View>
 
-          <View
-            style={styles.detailBlock}
-          >
+          {this.state.ratings.length > 0 ?
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
+              style={styles.detailBlock}
             >
               <Label
                 style={styles.title}
               >
                 Rating
               </Label>
-              <Label
+
+              <View
                 style={{
-                  color: Colors.white,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
                 }}
               >
-                {/* {movie.vote_average} */}
-              </Label>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              }}
-            >
-              {this.state.ratings.map(rating => (
-                <View
-                  key={rating.Source}
-                  style={{
-                    alignItems: 'center',
-                  }}
-                >
-                  <Image
-                    resizeMode="contain"
-                    source={ratingImg[rating.Source]}
+                {this.state.ratings.map(rating => (
+                  <View
+                    key={rating.Source}
                     style={{
-                      height: 50,
-                      width: 50,
-                    }}
-                  />
-                  <Label
-                    style={{
-                      paddingTop: 5,
-                      color: Colors.white,
+                      alignItems: 'center',
                     }}
                   >
-                    {rating.Value}
-                  </Label>
-                </View>
-              ))}
+                    <Image
+                      resizeMode="contain"
+                      source={ratingImg[rating.Source]}
+                      style={{
+                        height: 50,
+                        width: 50,
+                      }}
+                    />
+                    <Label
+                      style={{
+                        paddingTop: 5,
+                        color: Colors.white,
+                      }}
+                    >
+                      {rating.Value}
+                    </Label>
+                  </View>
+                ))}
+              </View>
             </View>
-
-          </View>
+            : null
+          }
 
           <View
             style={styles.detailBlock}
@@ -258,6 +324,28 @@ export default class Movie extends React.Component {
               {movie.overview}
             </Label>
           </View>
+
+          {this.state.videos.length > 0 ?
+            <View
+            >
+              <Label
+                style={[styles.title, { paddingHorizontal: 10 }]}
+              >
+                Videos
+              </Label>
+              <FlatList
+                horizontal
+                data={this.state.videos}
+                renderItem={this.renderVideos}
+                showsHorizontalScrollIndicator={false}
+                ListHeaderComponent={() => <View style={{ width: 10 }} />}
+                ListFooterComponent={() => <View style={{ width: 10 }} />}
+                ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+                keyExtractor={(item, index) => `videos-${index}`}
+              />
+            </View>
+            : null
+          }
 
           <PersonList
             title="Cast"
@@ -278,6 +366,7 @@ export default class Movie extends React.Component {
           />
 
         </ParallaxScrollView>
+        {this.renderImageViewer()}
       </View>
     );
   }
