@@ -4,7 +4,7 @@ const omdbUrl = 'https://www.omdbapi.com/';
 const omdbKey = '87a63633';
 
 export default class API {
-  static getMovies(query, page, callback) {
+  static getMovies(query, callback, page = 1) {
     return fetch(`${baseUrl}/search/movie?api_key=${apiKey}&query=${escape(query)}&page=${page}`)
       .then(response => response.json())
       .then((responseJson) => {
@@ -61,7 +61,7 @@ export default class API {
   }
 
   static getPeopleCredits(personId, callback) {
-    return fetch(`${baseUrl}/person/${personId}/combined_credits?api_key=${apiKey}`)
+    return fetch(`${baseUrl}/person/${personId}/movie_credits?api_key=${apiKey}`)
       .then(response => response.json())
       .then((responseJson) => {
         callback(responseJson);

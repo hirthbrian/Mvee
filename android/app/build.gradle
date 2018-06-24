@@ -98,7 +98,7 @@ android {
     buildToolsVersion "26.0.3"
 
     defaultConfig {
-        applicationId "com.mvee"
+        applicationId "com.brian.mvee"
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 4

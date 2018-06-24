@@ -2,11 +2,16 @@ import React from 'react';
 import {
   StyleSheet,
   StatusBar,
+  View,
+  FlatList,
   ScrollView,
 } from 'react-native';
+import moment from 'moment';
 import Colors from '../config/Colors';
 import API from '../config/API';
 import MovieList from './MovieList';
+import Label from './Label';
+import Touchable from './Touchable';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +26,7 @@ export default class Home extends React.Component {
     super(props);
 
     this.state = {
+      searchResults: [],
       popular: [],
       upcoming: [],
       nowPlaying: [],
@@ -30,7 +36,7 @@ export default class Home extends React.Component {
   }
 
   componentWillMount() {
-    this.props.navigation.setParams({ onSearch: () => {} });
+    this.props.navigation.setParams({ onSearch: this.onSearch });
 
     API.getPopularMovies((result) => {
       if (result.length !== 0) {
@@ -51,6 +57,12 @@ export default class Home extends React.Component {
     });
   }
 
+  onSearch = (text) => {
+    API.getMovies(text, (result) => {
+      this.setState({ searchResults: result.slice(0, 10) });
+    });
+  }
+
   goToDetails = movie => () => {
     this.props.navigation.navigate('Movie', { movie, title: movie.title });
   };
@@ -64,6 +76,40 @@ export default class Home extends React.Component {
     />
   )
 
+  renderSearchResultItem = (data) => {
+    const movie = data.item;
+
+    return (
+      <Touchable
+        onPress={this.goToDetails(movie)}
+      >
+        <View
+          style={{
+            padding: 10,
+            flexDirection: 'row',
+          }}
+        >
+          <Label
+            style={{
+              color: Colors.white,
+            }}
+          >
+            {movie.title} {movie.release_date && `(${moment(movie.release_date).format('Y')})`}
+          </Label>
+        </View>
+      </Touchable>
+    );
+  }
+
+  renderSearchResult = () => (
+    <FlatList
+      data={this.state.searchResults}
+      renderItem={this.renderSearchResultItem}
+      ItemSeparatorComponent={() => <View style={{ height: 1, backgroundColor: Colors.white }} />}
+      keyExtractor={(item, index) => `result-${index}`}
+    />
+  )
+
   render() {
     return (
       <ScrollView
@@ -73,12 +119,15 @@ export default class Home extends React.Component {
         }}
       >
         <StatusBar
+          translucent
           barStyle="light-content"
-          backgroundColor={Colors.red}
+          backgroundColor={Colors.transparent}
         />
+
+        {this.renderSearchResult()}
+        {this.renderList('Now Playing', this.state.nowPlaying)}
         {this.renderList('Popular', this.state.popular)}
         {this.renderList('Upcoming', this.state.upcoming)}
-        {this.renderList('Now Playing', this.state.nowPlaying)}
       </ScrollView>
     );
   }

@@ -36,7 +36,7 @@ export default class MovieList extends React.Component {
     return (
       <View>
         <Label
-          fontWeight={300}
+          fontWeight={200}
           style={{
             fontSize: 28,
             color: Colors.white,

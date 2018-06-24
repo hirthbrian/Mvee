@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  Dimensions,
+  View,
   TextInput,
   TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { View as AView } from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../config/Colors';
 
@@ -20,15 +19,10 @@ export default class SearchBar extends React.Component {
   }
 
   render() {
-    const { width } = Dimensions.get('window');
-
     return (
-      <AView
+      <View
         ref={(ref) => {
           this.searchBar = ref;
-        }}
-        onTransitionEnd={() => {
-          this.searchInput.focus();
         }}
         style={{
           flexDirection: 'row',
@@ -36,16 +30,25 @@ export default class SearchBar extends React.Component {
           backgroundColor: Colors.red,
           borderColor: Colors.white,
           borderBottomWidth: this.state.showSearchInput ? 2 : 0,
-          paddingVertical: 5,
+          paddingBottom: 5,
         }}
       >
         <TouchableWithoutFeedback
+          hitSlop={{
+            top: 20,
+            left: 20,
+            bottom: 20,
+            right: 20,
+          }}
           onPress={() => {
-            this.setState({ showSearchInput: true });
-            this.searchBar.transitionTo({ width: width - 50 }, 600, 'ease');
+            this.setState({ showSearchInput: true }, () => {
+              this.searchInput.focus();
+            });
           }}
         >
-          <Icon name="search" size={18} color={Colors.white} />
+          <View>
+            <Icon name="search" size={18} color={Colors.white} />
+          </View>
         </TouchableWithoutFeedback>
         {this.state.showSearchInput &&
           <TextInput
@@ -66,7 +69,7 @@ export default class SearchBar extends React.Component {
             }}
           />
         }
-      </AView>
+      </View>
     );
   }
 }

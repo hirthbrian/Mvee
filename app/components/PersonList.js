@@ -53,6 +53,7 @@ export default class PersonList extends React.Component {
               color: Colors.white,
               paddingTop: 5,
             }}
+            numberOfLines={2}
           >
             {credit.name}
           </Label>
@@ -76,7 +77,7 @@ export default class PersonList extends React.Component {
     return (
       <View>
         <Label
-          fontWeight={300}
+          fontWeight={200}
           style={{
             fontSize: 28,
             color: Colors.white,

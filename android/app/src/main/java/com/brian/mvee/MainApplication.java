@@ -1,4 +1,4 @@
-package com.mvee;
+package com.brian.mvee;
 
 import android.app.Application;
 

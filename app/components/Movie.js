@@ -3,25 +3,21 @@ import {
   Dimensions,
   StatusBar,
   Image,
-  Linking,
   TouchableWithoutFeedback,
-  ImageBackground,
   StyleSheet,
   View,
   Modal,
-  FlatList,
 } from 'react-native';
 import moment from 'moment';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import API from '../config/API';
 import Colors from '../config/Colors';
 import Label from './Label';
 import MovieList from './MovieList';
 import PersonList from './PersonList';
-import Touchable from './Touchable';
+import VideoList from './VideoList';
 
 const styles = StyleSheet.create({
   detailBlock: {
@@ -30,7 +26,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.white,
-    fontSize: 22,
+    fontSize: 28,
     paddingBottom: 10,
   },
   description: {
@@ -55,7 +51,6 @@ export default class Movie extends React.Component {
     this.state = {
       movie: {},
       cast: [],
-      crew: [],
       ratings: [],
       similarMovies: [],
       videos: [],
@@ -76,7 +71,6 @@ export default class Movie extends React.Component {
       API.getMovieCredits(result.id, (credits) => {
         this.setState({
           cast: credits.cast,
-          crew: credits.crew,
         });
       });
       API.getSimilarMovies(result.id, (similarResult) => {
@@ -116,28 +110,6 @@ export default class Movie extends React.Component {
       />
     );
   };
-
-  renderVideos = (data) => {
-    const video = data.item;
-
-    return (
-      <Touchable
-        onPress={() => {
-          Linking.openURL(`https://www.youtube.com/watch?v=${video.key}`);
-        }}
-      >
-        <Image
-          style={{
-            width: 160,
-            height: 90,
-            borderRadius: 4,
-            justifyContent: 'flex-end',
-          }}
-          source={{ uri: `https://img.youtube.com/vi/${video.key}/hqdefault.jpg` }}
-        />
-      </Touchable>
-    );
-  }
 
   renderImageViewer = () => (
     <Modal
@@ -184,19 +156,21 @@ export default class Movie extends React.Component {
                 alignItems: 'flex-end',
               }}
             >
-              <TouchableWithoutFeedback
-                onPress={this.toggleImageViewer}
-              >
-                <Image
-                  style={{
-                    borderRadius: 4,
-                    width: this.state.creditWidth,
-                    height: this.state.creditHeight,
-                    backgroundColor: Colors.blue,
-                  }}
-                  source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
-                />
-              </TouchableWithoutFeedback>
+              {movie.poster_path &&
+                <TouchableWithoutFeedback
+                  onPress={this.toggleImageViewer}
+                >
+                  <Image
+                    style={{
+                      borderRadius: 4,
+                      width: this.state.creditWidth,
+                      height: this.state.creditHeight,
+                      backgroundColor: Colors.blue,
+                    }}
+                    source={{ uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}` }}
+                  />
+                </TouchableWithoutFeedback>
+              }
               <View
                 style={{
                   flex: 1,
@@ -228,13 +202,15 @@ export default class Movie extends React.Component {
           )}
         >
           <StatusBar
+            translucent
             barStyle="light-content"
-            backgroundColor={Colors.blue}
+            backgroundColor={Colors.transparent}
           />
           <View
             style={styles.detailBlock}
           >
             <Label
+              fontWeight={200}
               style={styles.title}
             >
               Details
@@ -269,6 +245,7 @@ export default class Movie extends React.Component {
               style={styles.detailBlock}
             >
               <Label
+                fontWeight={200}
                 style={styles.title}
               >
                 Rating
@@ -314,6 +291,7 @@ export default class Movie extends React.Component {
             style={styles.detailBlock}
           >
             <Label
+              fontWeight={200}
               style={styles.title}
             >
               Synopsis
@@ -325,37 +303,14 @@ export default class Movie extends React.Component {
             </Label>
           </View>
 
-          {this.state.videos.length > 0 ?
-            <View
-            >
-              <Label
-                style={[styles.title, { paddingHorizontal: 10 }]}
-              >
-                Videos
-              </Label>
-              <FlatList
-                horizontal
-                data={this.state.videos}
-                renderItem={this.renderVideos}
-                showsHorizontalScrollIndicator={false}
-                ListHeaderComponent={() => <View style={{ width: 10 }} />}
-                ListFooterComponent={() => <View style={{ width: 10 }} />}
-                ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
-                keyExtractor={(item, index) => `videos-${index}`}
-              />
-            </View>
-            : null
-          }
+          <VideoList
+            title="Videos"
+            data={this.state.videos}
+          />
 
           <PersonList
             title="Cast"
             data={this.state.cast}
-            onPress={this.goToPersonDetails}
-          />
-
-          <PersonList
-            title="Crew"
-            data={this.state.crew}
             onPress={this.goToPersonDetails}
           />
 

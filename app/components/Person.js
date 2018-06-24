@@ -130,6 +130,7 @@ export default class Person extends React.Component {
           )}
         >
           <StatusBar
+            translucent
             barStyle="light-content"
             backgroundColor={Colors.blue}
           />
@@ -158,6 +159,7 @@ export default class Person extends React.Component {
           </View>
 
           <Label
+            fontWeight={200}
             style={{
               fontSize: 22,
               padding: 10,

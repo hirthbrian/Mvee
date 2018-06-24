@@ -1,4 +1,4 @@
-package com.mvee;
+package com.brian.mvee;
 
 import com.facebook.react.ReactActivity;
 
