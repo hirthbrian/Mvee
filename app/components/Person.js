@@ -132,7 +132,7 @@ export default class Person extends React.Component {
           <StatusBar
             translucent
             barStyle="light-content"
-            backgroundColor={Colors.blue}
+            backgroundColor={Colors.transparent}
           />
 
           <View
