@@ -89,11 +89,11 @@ const RootStack = createStackNavigator({
     headerTintColor: Colors.white,
     headerBackTitleStyle: {
       color: Colors.white,
-      fontFamily: 'IBMPlexSans',
+      fontFamily: 'plex',
     },
     headerTitleStyle: {
       color: Colors.white,
-      fontFamily: 'IBMPlexSans',
+      fontFamily: 'plex',
     },
   },
 });

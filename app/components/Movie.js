@@ -8,9 +8,9 @@ import {
   View,
   Modal,
 } from 'react-native';
+import { LinearGradient } from 'expo';
 import moment from 'moment';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import LinearGradient from 'react-native-linear-gradient';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import API from '../config/API';
 import Colors from '../config/Colors';
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
 
 const MAX_HEADER_HEIGHT = 300;
 export const ratingImg = {
-  'Internet Movie Database': require('../assets/img/imdb.png'),
-  'Metacritic': require('../assets/img/metacritic.png'),
-  'Rotten Tomatoes': require('../assets/img/rotten_tomatoes.png'),
+  'Internet Movie Database': require('../../assets/img/imdb.png'),
+  'Metacritic': require('../../assets/img/metacritic.png'),
+  'Rotten Tomatoes': require('../../assets/img/rotten_tomatoes.png'),
 };
 
 export default class Movie extends React.Component {

@@ -9,25 +9,25 @@ export default class Label extends React.Component {
     let weight;
     switch (props.fontWeight) {
       case 100:
-        weight = '-Thin';
+        weight = '-thin';
         break;
       case 200:
-        weight = '-ExtraLight';
+        weight = '-extra-light';
         break;
       case 300:
-        weight = '-Light';
+        weight = '-light';
         break;
       case 400:
         weight = '';
         break;
       case 500:
-        weight = '-Medium';
+        weight = '-medium';
         break;
       case 600:
-        weight = '-SemiBold';
+        weight = '-semi-bold';
         break;
       case 700:
-        weight = '-Bold';
+        weight = '-bold';
         break;
       default:
         weight = '';
@@ -39,7 +39,7 @@ export default class Label extends React.Component {
     return (
       <Text
         {...this.props}
-        style={[this.props.style, { fontFamily: `IBMPlexSans${this.weight}` }]}
+        style={[this.props.style, { fontFamily: `plex${this.weight}` }]}
       >
         {this.props.children}
       </Text>

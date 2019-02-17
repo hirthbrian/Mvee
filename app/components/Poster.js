@@ -3,7 +3,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
 import Colors from '../config/Colors';
 import Touchable from './Touchable';
