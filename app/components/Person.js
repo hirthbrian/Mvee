@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import moment from 'moment';
+import Carousel from 'react-native-snap-carousel';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import API from '../config/API';
 import Colors from '../config/Colors';

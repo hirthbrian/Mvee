@@ -1,27 +1,23 @@
 import React from 'react';
 import {
   StyleSheet,
-  StatusBar,
   View,
   FlatList,
   ScrollView,
 } from 'react-native';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import Colors from '../config/Colors';
 import API from '../config/API';
 import MovieList from './MovieList';
 import Label from './Label';
 import Touchable from './Touchable';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingBottom: 25,
-    backgroundColor: Colors.blue,
-  },
-});
+import {
+  getPopularMovies
+} from '../actions';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
 
@@ -36,25 +32,29 @@ export default class Home extends React.Component {
   }
 
   componentWillMount() {
-    this.props.navigation.setParams({ onSearch: this.onSearch });
+    const { navigation, getPopularMovies } = this.props;
 
-    API.getPopularMovies((result) => {
-      if (result.length !== 0) {
-        this.setState({ popular: result });
-      }
-    });
+    navigation.setParams({ onSearch: this.onSearch });
 
-    API.getUpcomingMovies((result) => {
-      if (result.length !== 0) {
-        this.setState({ upcoming: result });
-      }
-    });
+    getPopularMovies();
 
-    API.getNowPlayingMovies((result) => {
-      if (result.length !== 0) {
-        this.setState({ nowPlaying: result });
-      }
-    });
+    // API.getPopularMovies((result) => {
+    //   if (result.length !== 0) {
+    //     this.setState({ popular: result });
+    //   }
+    // });
+
+    // API.getUpcomingMovies((result) => {
+    //   if (result.length !== 0) {
+    //     this.setState({ upcoming: result });
+    //   }
+    // });
+
+    // API.getNowPlayingMovies((result) => {
+    //   if (result.length !== 0) {
+    //     this.setState({ nowPlaying: result });
+    //   }
+    // });
   }
 
   onSearch = (text) => {
@@ -63,8 +63,8 @@ export default class Home extends React.Component {
     });
   }
 
-  goToDetails = movie => () => {
-    this.props.navigation.navigate('Movie', { movie, title: movie.title });
+  goToDetails = id => () => {
+    this.props.navigation.navigate('Movie', { id });
   };
 
   renderList = (title, data) => (
@@ -111,6 +111,8 @@ export default class Home extends React.Component {
   )
 
   render() {
+    const { popular } = this.props;
+
     return (
       <ScrollView
         style={styles.container}
@@ -118,17 +120,26 @@ export default class Home extends React.Component {
           paddingBottom: 25,
         }}
       >
-        <StatusBar
-          translucent
-          barStyle="light-content"
-          backgroundColor={Colors.transparent}
-        />
 
         {this.renderSearchResult()}
-        {this.renderList('Now Playing', this.state.nowPlaying)}
-        {this.renderList('Popular', this.state.popular)}
-        {this.renderList('Upcoming', this.state.upcoming)}
+        {/* {this.renderList('Now Playing', this.state.nowPlaying)} */}
+        {this.renderList('Popular', popular)}
+        {/* {this.renderList('Upcoming', this.state.upcoming)} */}
       </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingBottom: 25,
+    backgroundColor: Colors.blue,
+  },
+});
+
+const mapStateToProps = ({ movies }) => ({
+  popular: movies.popular,
+});
+
+export default connect(mapStateToProps, { getPopularMovies })(Home)

@@ -12,42 +12,33 @@ import Label from './Label';
 import Touchable from './Touchable';
 
 export default class VideoList extends React.Component {
-  constructor(props) {
-    super(props);
-
+  renderItem = ({ item }) => {
     const { width } = Dimensions.get('window');
-
-    this.state = {
-      videoWidth: width / 2,
-      videoHeight: (width / 2) / 1.77,
-    };
-  }
-
-  renderItem = (data) => {
-    const video = data.item;
 
     return (
       <Touchable
         onPress={() => {
-          Linking.openURL(`https://www.youtube.com/watch?v=${video.key}`);
+          Linking.openURL(item.url);
         }}
       >
         <Image
           style={{
-            width: this.state.videoWidth,
-            height: this.state.videoHeight,
+            width: width / 2,
+            height: (width / 2) / 1.77,
             borderRadius: 4,
-            justifyContent: 'flex-end',
           }}
-          source={{ uri: `https://img.youtube.com/vi/${video.key}/hqdefault.jpg` }}
+          source={{ uri: item.thumbnail }}
         />
       </Touchable>
     );
   }
 
   render() {
+    const { data } = this.props;
+
+    if (!data || data.length === 0) return null
+
     return (
-      this.props.data.length > 0 &&
       <View>
         <Label
           fontWeight={200}
@@ -75,6 +66,5 @@ export default class VideoList extends React.Component {
 }
 
 VideoList.propTypes = {
-  title: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
 };

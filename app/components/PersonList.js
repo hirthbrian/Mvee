@@ -11,38 +11,35 @@ import Label from './Label';
 import Touchable from './Touchable';
 
 export default class PersonList extends React.Component {
-  constructor(props) {
-    super(props);
-
+  renderItem = ({item}) => {
     const { width } = Dimensions.get('window');
 
-    this.state = {
-      creditWidth: width / 5,
-      creditHeight: (width / 5) * 1.55,
-    };
-  }
-
-  renderItem = (data) => {
-    const credit = data.item;
+    const {
+      id,
+      name,
+      job,
+      character,
+      picture
+    } = item;
 
     return (
       <Touchable
-        onPress={this.props.onPress(credit)}
+        onPress={this.props.onPress(id)}
       >
         <View
           style={{
-            width: this.state.creditWidth,
+            width: width / 5,
             alignItems: 'center',
           }}
         >
           <Image
             style={{
               borderRadius: 4,
-              width: this.state.creditWidth,
-              height: this.state.creditHeight,
+              width: width / 5,
+              height: (width / 5) * 1.55,
               backgroundColor: Colors.brown,
             }}
-            source={{ uri: `https://image.tmdb.org/t/p/w185/${credit.profile_path}` }}
+            source={{ uri: picture }}
           />
 
           <Label
@@ -55,7 +52,7 @@ export default class PersonList extends React.Component {
             }}
             numberOfLines={2}
           >
-            {credit.name}
+            {name}
           </Label>
           <Label
             style={{
@@ -66,7 +63,7 @@ export default class PersonList extends React.Component {
             }}
             numberOfLines={2}
           >
-            {credit.character || credit.job}
+            {character || job}
           </Label>
         </View>
       </Touchable>
@@ -103,6 +100,6 @@ export default class PersonList extends React.Component {
 
 PersonList.propTypes = {
   title: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   onPress: PropTypes.func.isRequired,
 };

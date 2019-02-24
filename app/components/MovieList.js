@@ -4,7 +4,6 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import Placeholder from 'rn-placeholder';
 import Colors from '../config/Colors';
@@ -12,15 +11,20 @@ import Poster from './Poster';
 import Label from './Label';
 
 export default class MovieList extends React.Component {
-  renderItem = (data) => {
-    const movie = data.item;
+  renderItem = ({ item }) => {
+    const {
+      id,
+      title,
+      year,
+      poster,
+    } = item;
 
     return (
       <Poster
-        title={movie.title}
-        year={moment(movie.release_date).format('Y')}
-        posterUrl={movie.poster_path}
-        onPress={this.props.onPress(movie)}
+        title={title}
+        year={year}
+        poster={poster}
+        onPress={this.props.onPress(id)}
       />
     );
   };
@@ -88,7 +92,7 @@ export default class MovieList extends React.Component {
 
 MovieList.propTypes = {
   title: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   onPress: PropTypes.func.isRequired,
   loading: PropTypes.bool,
 };

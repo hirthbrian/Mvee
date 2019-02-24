@@ -12,13 +12,13 @@ export default class API {
       });
   }
 
-  static getSimilarMovies(movieId, callback, page = 1) {
-    return fetch(`${baseUrl}/movie/${movieId}/similar?api_key=${apiKey}&page=${page}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson.results);
-      });
-  }
+  // static getSimilarMovies(movieId, callback, page = 1) {
+  //   return fetch(`${baseUrl}/movie/${movieId}/similar?api_key=${apiKey}&page=${page}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson.results);
+  //     });
+  // }
 
   static getPopularMovies(callback, page = 1) {
     return fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&page=${page}`)
@@ -44,21 +44,21 @@ export default class API {
       });
   }
 
-  static getMovieCredits(movieId, callback) {
-    return fetch(`${baseUrl}/movie/${movieId}/credits?api_key=${apiKey}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson);
-      });
-  }
+  // static getMovieCredits(movieId, callback) {
+  //   return fetch(`${baseUrl}/movie/${movieId}/credits?api_key=${apiKey}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson);
+  //     });
+  // }
 
-  static getMovieVideos(movieId, callback) {
-    return fetch(`${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson.results);
-      });
-  }
+  // static getMovieVideos(movieId, callback) {
+  //   return fetch(`${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson.results);
+  //     });
+  // }
 
   static getPeopleCredits(personId, callback) {
     return fetch(`${baseUrl}/person/${personId}/movie_credits?api_key=${apiKey}`)
@@ -68,21 +68,21 @@ export default class API {
       });
   }
 
-  static getMovie(movieId, callback) {
-    return fetch(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson);
-      });
-  }
+  // static getMovie(movieId, callback) {
+  //   return fetch(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson);
+  //     });
+  // }
 
-  static getMovieRatings(movieImdbId, callback) {
-    return fetch(`${omdbUrl}?apikey=${omdbKey}&i=${movieImdbId}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson.Ratings);
-      });
-  }
+  // static getMovieRatings(movieImdbId, callback) {
+  //   return fetch(`${omdbUrl}?apikey=${omdbKey}&i=${movieImdbId}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson.Ratings);
+  //     });
+  // }
 
   static getPerson(personId, callback) {
     return fetch(`${baseUrl}/person/${personId}?api_key=${apiKey}`)

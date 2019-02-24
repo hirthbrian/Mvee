@@ -10,17 +10,10 @@ import Touchable from './Touchable';
 import Label from './Label';
 
 export default class Poster extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-    };
-  }
-
   render() {
     const {
       onPress,
-      posterUrl,
+      poster,
       title,
       year,
     } = this.props;
@@ -43,7 +36,7 @@ export default class Poster extends React.Component {
             height: posterHeight,
             backgroundColor: Colors.blue,
           }}
-          source={{ uri: `https://image.tmdb.org/t/p/w185/${posterUrl}` }}
+          source={{ uri: poster }}
         >
           <LinearGradient
             colors={[Colors.transparent, Colors.transparent, Colors.black]}
@@ -70,7 +63,7 @@ export default class Poster extends React.Component {
 
 Poster.propTypes = {
   onPress: PropTypes.func.isRequired,
-  posterUrl: PropTypes.string.isRequired,
+  poster: PropTypes.string.isRequired,
   title: PropTypes.string,
   year: PropTypes.string.isRequired,
 };
