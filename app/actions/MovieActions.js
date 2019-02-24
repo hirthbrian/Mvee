@@ -17,6 +17,12 @@ import {
   GET_POPULAR_MOVIE,
   GET_POPULAR_MOVIE_SUCCESS,
   GET_POPULAR_MOVIE_FAIL,
+  GET_UPCOMING_MOVIE,
+  GET_UPCOMING_MOVIE_SUCCESS,
+  GET_UPCOMING_MOVIE_FAIL,
+  GET_NOW_PLAYING_MOVIE,
+  GET_NOW_PLAYING_MOVIE_SUCCESS,
+  GET_NOW_PLAYING_MOVIE_FAIL,
 } from './types';
 
 import moment from 'moment';
@@ -43,6 +49,48 @@ export const getPopularMovies = () => {
       .catch(error => {
         console.log(error)
         dispatch({ type: GET_POPULAR_MOVIE_FAIL });
+      });
+  }
+}
+
+export const getUpcomingMovies = () => {
+  return (dispatch) => {
+    dispatch({ type: GET_UPCOMING_MOVIE });
+    fetch(`${baseUrl}/movie/upcoming?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then(response => {
+        const popular = response.results.map(item => ({
+          id: item.id,
+          title: item.title,
+          year: moment(item.release_date).format('Y'),
+          poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
+        }));
+        dispatch({ type: GET_UPCOMING_MOVIE_SUCCESS, payload: popular });
+      })
+      .catch(error => {
+        console.log(error)
+        dispatch({ type: GET_UPCOMING_MOVIE_FAIL });
+      });
+  }
+}
+
+export const getNowPlayingMovies = () => {
+  return (dispatch) => {
+    dispatch({ type: GET_NOW_PLAYING_MOVIE });
+    fetch(`${baseUrl}/movie/now_playing?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then(response => {
+        const popular = response.results.map(item => ({
+          id: item.id,
+          title: item.title,
+          year: moment(item.release_date).format('Y'),
+          poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
+        }));
+        dispatch({ type: GET_NOW_PLAYING_MOVIE_SUCCESS, payload: popular });
+      })
+      .catch(error => {
+        console.log(error)
+        dispatch({ type: GET_NOW_PLAYING_MOVIE_FAIL });
       });
   }
 }
@@ -161,7 +209,7 @@ export const getMovieSimilar = (id) => {
           similar: response.results.map(item => ({
             id: item.id,
             title: item.title,
-            year: moment(item.release_date).format('Y'),
+            year: item.release_date && moment(item.release_date).format('Y'),
             poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
           })),
         }

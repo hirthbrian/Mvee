@@ -36,15 +36,15 @@ class Movie extends React.Component {
     } = this.props;
     const id = navigation.getParam('id');
 
-    getMovie(id)
+    getMovie(id);
   }
 
   goToDetails = id => () => {
     this.props.navigation.navigate({ routeName: 'Movie', params: { id }, key: id });
   }
 
-  goToPersonDetails = person => () => {
-    this.props.navigation.navigate({ routeName: 'Person', params: { person, title: person.name }, key: person.id });
+  goToPersonDetails = id => () => {
+    this.props.navigation.navigate({ routeName: 'Person', params: { id }, key: id });
   }
 
   renderHeader = () => {

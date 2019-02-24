@@ -6,7 +6,7 @@ import {
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
-import moment from 'moment';
+import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import API from '../config/API';
@@ -16,34 +16,36 @@ import MovieList from './MovieList';
 
 const MAX_HEADER_HEIGHT = 300;
 
-export default class Person extends React.Component {
+import {
+  getPerson,
+  getPersonCredits,
+  getPersonImages,
+} from '../actions';
+
+class Person extends React.Component {
   constructor(props) {
     super(props);
 
     const { width } = Dimensions.get('window');
 
     this.state = {
-      person: {},
-      credits: [],
-      images: [],
       creditWidth: width / 4,
       creditHeight: (width / 4) * 1.55,
     };
   }
 
   componentWillMount() {
-    const { params } = this.props.navigation.state;
+    const {
+      navigation,
+      getPerson,
+      getPersonCredits,
+      getPersonImages,
+    } = this.props;
+    const id = navigation.getParam('id');
 
-    API.getPerson(params.person.id, (result) => {
-      this.setState({ person: result }, () => {
-        API.getPeopleCredits(result.id, (credits) => {
-          this.setState({ credits: credits.cast });
-        });
-        API.getPersonTaggedImages(result.id, (images) => {
-          this.setState({ images: images.results.slice(0, 10) });
-        });
-      });
-    });
+    getPerson(id);
+    getPersonCredits(id);
+    getPersonImages(id);
   }
 
   goToDetails = movie => () => {
@@ -52,6 +54,11 @@ export default class Person extends React.Component {
 
   renderHeader = () => {
     const { width } = Dimensions.get('window');
+    const {
+      person: {
+        gallery
+      }
+    } = this.props;
 
     return (
       <Carousel
@@ -59,18 +66,16 @@ export default class Person extends React.Component {
         autoplay
         autoplayInterval={5000}
         inactiveSlideScale={1}
-        data={this.state.images}
-        renderItem={(data) => {
-          return (
-            <Image
-              style={{
-                width,
-                height: MAX_HEADER_HEIGHT,
-              }}
-              source={{ uri: `https://image.tmdb.org/t/p/w780/${data.item.file_path}` }}
-            />
-          );
-        }}
+        data={gallery || []}
+        renderItem={({ item }) => (
+          <Image
+            style={{
+              width,
+              height: MAX_HEADER_HEIGHT,
+            }}
+            source={{ uri: item }}
+          />
+        )}
         sliderWidth={width}
         itemWidth={width}
       />
@@ -78,7 +83,19 @@ export default class Person extends React.Component {
   };
 
   render() {
-    const { person } = this.state;
+    const { person } = this.props;
+
+    if (!person) return null;
+
+    const {
+      name,
+      birthday,
+      deathday,
+      biography,
+      picture,
+      cast,
+      crew,
+    } = person;
 
     return (
       <View
@@ -113,7 +130,7 @@ export default class Person extends React.Component {
                   height: this.state.creditHeight,
                   backgroundColor: Colors.blue,
                 }}
-                source={{ uri: `https://image.tmdb.org/t/p/w500/${person.profile_path}` }}
+                source={{ uri: picture }}
               />
               <Label
                 fontWeight={200}
@@ -124,17 +141,11 @@ export default class Person extends React.Component {
                   paddingHorizontal: 10,
                 }}
               >
-                {this.state.person.name}
+                {name}
               </Label>
             </LinearGradient>
           )}
         >
-          <StatusBar
-            translucent
-            barStyle="light-content"
-            backgroundColor={Colors.transparent}
-          />
-
           <View
             style={{
               flexDirection: 'row',
@@ -147,14 +158,14 @@ export default class Person extends React.Component {
                 color: Colors.white,
               }}
             >
-              {person.birthday && moment(person.birthday).format('MMMM Do YYYY')}
+              {birthday}
             </Label>
             <Label
               style={{
                 color: Colors.white,
               }}
             >
-              {person.deathday && moment(person.deathday).format('MMMM Do YYYY')}
+              {deathday}
             </Label>
           </View>
 
@@ -175,12 +186,18 @@ export default class Person extends React.Component {
               color: Colors.white,
             }}
           >
-            {person.biography}
+            {biography}
           </Label>
 
           <MovieList
-            title="Credits"
-            data={this.state.credits}
+            title="Cast"
+            data={cast}
+            onPress={this.goToDetails}
+          />
+
+          <MovieList
+            title="Crew"
+            data={crew}
             onPress={this.goToDetails}
           />
 
@@ -189,3 +206,9 @@ export default class Person extends React.Component {
     );
   }
 }
+
+const mapStateToProps = ({ persons }, props) => ({
+  person: persons[props.navigation.state.params.id],
+});
+
+export default connect(mapStateToProps, { getPerson, getPersonCredits, getPersonImages })(Person)

@@ -63,7 +63,7 @@ export default class Poster extends React.Component {
 
 Poster.propTypes = {
   onPress: PropTypes.func.isRequired,
-  poster: PropTypes.string.isRequired,
+  poster: PropTypes.string,
   title: PropTypes.string,
-  year: PropTypes.string.isRequired,
+  year: PropTypes.string,
 };

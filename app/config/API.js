@@ -20,13 +20,13 @@ export default class API {
   //     });
   // }
 
-  static getPopularMovies(callback, page = 1) {
-    return fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&page=${page}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson.results);
-      });
-  }
+  // static getPopularMovies(callback, page = 1) {
+  //   return fetch(`${baseUrl}/movie/popular?api_key=${apiKey}&page=${page}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson.results);
+  //     });
+  // }
 
   static getUpcomingMovies(callback, page = 1) {
     return fetch(`${baseUrl}/movie/upcoming?api_key=${apiKey}&page=${page}`)
@@ -60,13 +60,13 @@ export default class API {
   //     });
   // }
 
-  static getPeopleCredits(personId, callback) {
-    return fetch(`${baseUrl}/person/${personId}/movie_credits?api_key=${apiKey}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson);
-      });
-  }
+  // static getPeopleCredits(personId, callback) {
+  //   return fetch(`${baseUrl}/person/${personId}/movie_credits?api_key=${apiKey}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson);
+  //     });
+  // }
 
   // static getMovie(movieId, callback) {
   //   return fetch(`${baseUrl}/movie/${movieId}?api_key=${apiKey}`)
@@ -84,19 +84,19 @@ export default class API {
   //     });
   // }
 
-  static getPerson(personId, callback) {
-    return fetch(`${baseUrl}/person/${personId}?api_key=${apiKey}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson);
-      });
-  }
+  // static getPerson(personId, callback) {
+  //   return fetch(`${baseUrl}/person/${personId}?api_key=${apiKey}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson);
+  //     });
+  // }
 
-  static getPersonTaggedImages(personId, callback) {
-    return fetch(`${baseUrl}/person/${personId}/tagged_images?api_key=${apiKey}`)
-      .then(response => response.json())
-      .then((responseJson) => {
-        callback(responseJson);
-      });
-  }
+  // static getPersonTaggedImages(personId, callback) {
+  //   return fetch(`${baseUrl}/person/${personId}/tagged_images?api_key=${apiKey}`)
+  //     .then(response => response.json())
+  //     .then((responseJson) => {
+  //       callback(responseJson);
+  //     });
+  // }
 }

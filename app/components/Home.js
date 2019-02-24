@@ -14,7 +14,9 @@ import Label from './Label';
 import Touchable from './Touchable';
 
 import {
-  getPopularMovies
+  getPopularMovies,
+  getUpcomingMovies,
+  getNowPlayingMovies,
 } from '../actions';
 
 class Home extends React.Component {
@@ -32,29 +34,18 @@ class Home extends React.Component {
   }
 
   componentWillMount() {
-    const { navigation, getPopularMovies } = this.props;
+    const {
+      navigation,
+      getPopularMovies,
+      getUpcomingMovies,
+      getNowPlayingMovies,
+    } = this.props;
 
     navigation.setParams({ onSearch: this.onSearch });
 
     getPopularMovies();
-
-    // API.getPopularMovies((result) => {
-    //   if (result.length !== 0) {
-    //     this.setState({ popular: result });
-    //   }
-    // });
-
-    // API.getUpcomingMovies((result) => {
-    //   if (result.length !== 0) {
-    //     this.setState({ upcoming: result });
-    //   }
-    // });
-
-    // API.getNowPlayingMovies((result) => {
-    //   if (result.length !== 0) {
-    //     this.setState({ nowPlaying: result });
-    //   }
-    // });
+    getUpcomingMovies();
+    getNowPlayingMovies();
   }
 
   onSearch = (text) => {
@@ -111,7 +102,11 @@ class Home extends React.Component {
   )
 
   render() {
-    const { popular } = this.props;
+    const {
+      nowPlaying,
+      popular,
+      upcoming,
+    } = this.props;
 
     return (
       <ScrollView
@@ -122,9 +117,9 @@ class Home extends React.Component {
       >
 
         {this.renderSearchResult()}
-        {/* {this.renderList('Now Playing', this.state.nowPlaying)} */}
+        {this.renderList('Now Playing', nowPlaying)}
         {this.renderList('Popular', popular)}
-        {/* {this.renderList('Upcoming', this.state.upcoming)} */}
+        {this.renderList('Upcoming', upcoming)}
       </ScrollView>
     );
   }
@@ -140,6 +135,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ movies }) => ({
   popular: movies.popular,
+  upcoming: movies.upcoming,
+  nowPlaying: movies.nowPlaying,
 });
 
-export default connect(mapStateToProps, { getPopularMovies })(Home)
+export default connect(mapStateToProps, { getPopularMovies, getUpcomingMovies, getNowPlayingMovies })(Home)

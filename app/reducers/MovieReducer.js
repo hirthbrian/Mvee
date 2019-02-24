@@ -17,10 +17,18 @@ import {
   GET_POPULAR_MOVIE,
   GET_POPULAR_MOVIE_SUCCESS,
   GET_POPULAR_MOVIE_FAIL,
+  GET_UPCOMING_MOVIE,
+  GET_UPCOMING_MOVIE_SUCCESS,
+  GET_UPCOMING_MOVIE_FAIL,
+  GET_NOW_PLAYING_MOVIE,
+  GET_NOW_PLAYING_MOVIE_SUCCESS,
+  GET_NOW_PLAYING_MOVIE_FAIL,
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  popular: []
+  upcoming: [],
+  popular: [],
+  nowPlaying: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -123,6 +131,33 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
       };
 
+    case GET_UPCOMING_MOVIE:
+      return {
+        ...state,
+      };
+    case GET_UPCOMING_MOVIE_SUCCESS:
+      return {
+        ...state,
+        upcoming: action.payload,
+      };
+    case GET_UPCOMING_MOVIE_FAIL:
+      return {
+        ...state,
+      };
+
+    case GET_NOW_PLAYING_MOVIE:
+      return {
+        ...state,
+      };
+    case GET_NOW_PLAYING_MOVIE_SUCCESS:
+      return {
+        ...state,
+        nowPlaying: action.payload,
+      };
+    case GET_NOW_PLAYING_MOVIE_FAIL:
+      return {
+        ...state,
+      };
     default:
       return state;
   }
