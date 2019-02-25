@@ -58,7 +58,7 @@ export default class VideoList extends React.Component {
           ListHeaderComponent={() => <View style={{ width: 10 }} />}
           ListFooterComponent={() => <View style={{ width: 10 }} />}
           ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
-          keyExtractor={(item, index) => `video-${index}`}
+          keyExtractor={(item, index) => index.toString()}
         />
       </View>
     );

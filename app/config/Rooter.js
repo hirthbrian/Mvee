@@ -1,65 +1,81 @@
 import React from 'react';
 import {
   View,
+  Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  createStackNavigator,
+  createAppContainer,
+} from 'react-navigation';
+import {
+  fromBottom,
+} from 'react-navigation-transitions'
 import Colors from './Colors';
-import Movie from '../components/Movie';
-import Person from '../components/Person';
-import Home from '../components/Home';
-import SearchBar from '../components/SearchBar';
-import Label from '../components/Label';
+import Search from '../views/Search';
+import Movie from '../views/Movie';
+import Person from '../views/Person';
+import Home from '../views/Home';
 
-const HEADER_HEIGHT = 70;
+const handleCustomTransition = ({ scenes }) => {
+  const prevScene = scenes[scenes.length - 2];
+  const nextScene = scenes[scenes.length - 1];
 
-const header = (left, title, right) => {
-  return (
-    ({ navigation }) => ({
-      header: (
-        <View
-          style={{
-            height: HEADER_HEIGHT,
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-            flexDirection: 'row',
-            paddingBottom: 10,
-            paddingHorizontal: 15,
-            backgroundColor: Colors.red,
-          }}
-        >
-          {left &&
-            <SearchBar
-              onSearch={navigation.state.params && navigation.state.params.onSearch}
-            />
-          }
-
-          <Label
-            numberOfLines={1}
-            style={{
-              flex: 1,
-              textAlign: 'center',
-              paddingHorizontal: 15,
-              color: Colors.white,
-              fontSize: 20,
-            }}
-          >
-            {title}
-          </Label>
-
-          <View style={{ height: 20, width: 20 }} />
-
-        </View>
-      ),
-    })
-  );
-};
+  if (nextScene.route.routeName === 'Search') {
+    return fromBottom();
+  }
+}
 
 const RootStack = createStackNavigator({
   Home: {
     screen: Home,
-    navigationOptions: header(true, 'mvee'),
+    navigationOptions: ({ navigation }) => ({
+      title: 'Mvee',
+      headerTintColor: Colors.white,
+      headerBackTitle: null,
+      headerStyle: {
+        backgroundColor: Colors.red,
+      },
+      headerTitleStyle: {
+        fontSize: 20,
+        fontFamily: 'plex-semi-bold'
+      },
+      headerLeftContainerStyle: {
+        paddingLeft: 10,
+      },
+      headerRightContainerStyle: {
+        paddingRight: 10,
+      },
+      headerLeft: (
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('Search')}
+        >
+          <Image
+            source={require('../../assets/img/glass.png')}
+            style={{
+              width: 25,
+              height: 25,
+              tintColor: Colors.white,
+            }}
+          />
+        </TouchableWithoutFeedback>
+      ),
+      headerRight: (
+        <Image
+          source={require('../../assets/logo.png')}
+          style={{
+            width: 25,
+            height: 25,
+          }}
+        />
+      )
+    }),
+  },
+  Search: {
+    screen: Search,
+    navigationOptions: () => ({
+      header: null
+    })
   },
   Movie: {
     screen: Movie,
@@ -84,17 +100,18 @@ const RootStack = createStackNavigator({
     }),
   },
 }, {
-  headerMode: 'screen',
-  navigationOptions: {
-    headerTintColor: Colors.white,
-    headerBackTitleStyle: {
-      color: Colors.white,
-      fontFamily: 'plex',
+    headerMode: 'screen',
+    transitionConfig: (nav) => handleCustomTransition(nav),
+    navigationOptions: {
+      headerTintColor: Colors.white,
+      headerBackTitleStyle: {
+        color: Colors.white,
+        fontFamily: 'plex',
+      },
+      headerTitleStyle: {
+        color: Colors.white,
+        fontFamily: 'plex',
+      },
     },
-    headerTitleStyle: {
-      color: Colors.white,
-      fontFamily: 'plex',
-    },
-  },
-});
-export default RootStack;
+  });
+export default createAppContainer(RootStack);

@@ -2,82 +2,70 @@ import React from 'react';
 import {
   View,
   TextInput,
+  Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
 import Colors from '../config/Colors';
 
-export default class SearchBar extends React.Component {
-  constructor(props) {
-    super(props);
+import {
+  search
+} from '../actions';
 
-    this.state = {
-      showSearchInput: false,
-      searchText: '',
-    };
+class SearchBar extends React.Component {
+  state = {
+    searchText: '',
+  }
+
+  onTextChange = text => this.setState({ searchText: text });
+
+  onEndEditing = () => {
+    const { search } = this.props;
+    const { searchText } = this.state;
+    search(searchText);
   }
 
   render() {
+    const { searchText } = this.state;
     return (
       <View
-        ref={(ref) => {
-          this.searchBar = ref;
-        }}
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: Colors.red,
-          borderColor: Colors.white,
-          borderBottomWidth: this.state.showSearchInput ? 2 : 0,
-          paddingBottom: 5,
+          borderRadius: 4,
+          marginVertical: 10,
+          marginHorizontal: 15,
+          paddingVertical: 10,
+          paddingHorizontal: 15,
         }}
       >
-        <TouchableWithoutFeedback
-          hitSlop={{
-            top: 20,
-            left: 20,
-            bottom: 20,
-            right: 20,
+        <Image
+          source={require('../../assets/img/glass.png')}
+          style={{
+            width: 25,
+            height: 25,
+            tintColor: Colors.white
           }}
-          onPress={() => {
-            this.setState({ showSearchInput: true }, () => {
-              this.searchInput.focus();
-            });
+        />
+        <TextInput
+          autoFocus
+          onChangeText={this.onTextChange}
+          onEndEditing={this.onEndEditing}
+          value={searchText}
+          placeholderTextColor={Colors.white}
+          selectionColor={Colors.white}
+          style={{
+            flex: 1,
+            fontSize: 18,
+            fontFamily: 'plex',
+            paddingLeft: 10,
+            color: Colors.white,
           }}
-        >
-          <View>
-            <Icon name="search" size={18} color={Colors.white} />
-          </View>
-        </TouchableWithoutFeedback>
-        {this.state.showSearchInput &&
-          <TextInput
-            ref={(ref) => {
-              this.searchInput = ref;
-            }}
-            onChangeText={text => this.setState({ searchText: text })}
-            onEndEditing={() => this.props.onSearch(this.state.searchText)}
-            value={this.state.searchText}
-            placeholderTextColor={Colors.white}
-            selectionColor={Colors.white}
-            underlineColorAndroid={Colors.transparent}
-            style={{
-              flex: 1,
-              paddingVertical: 0,
-              paddingLeft: 5,
-              color: Colors.white,
-            }}
-          />
-        }
+        />
       </View>
     );
   }
 }
 
-SearchBar.propTypes = {
-  onSearch: PropTypes.func,
-};
-
-SearchBar.defaultProps = {
-  onSearch: null,
-};
+export default connect(null, { search })(SearchBar)

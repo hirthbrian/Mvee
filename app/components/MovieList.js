@@ -5,9 +5,8 @@ import {
   Dimensions,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import Placeholder from 'rn-placeholder';
 import Colors from '../config/Colors';
-import Poster from './Poster';
+import MovieCard from './MovieCard';
 import Label from './Label';
 
 export default class MovieList extends React.Component {
@@ -20,23 +19,17 @@ export default class MovieList extends React.Component {
     } = item;
 
     return (
-      <Poster
+      <MovieCard
+        id={id}
         title={title}
         year={year}
         poster={poster}
-        onPress={this.props.onPress(id)}
       />
     );
   };
 
   render() {
-    const { width } = Dimensions.get('window');
-
-    const emptyArray = [0, 1, 2];
-
-    const posterWidth = width / 3;
-    const posterHeight = posterWidth * 1.55;
-
+    const { title } = this.props;
     return (
       <View>
         <Label
@@ -47,44 +40,18 @@ export default class MovieList extends React.Component {
             padding: 10,
           }}
         >
-          {this.props.title}
+          {title}
         </Label>
-        {this.props.loading ?
-          <View
-            style={{
-              flexDirection: 'row',
-              paddingLeft: 10,
-            }}
-          >
-            {emptyArray.map(data => (
-              <View
-                key={data}
-                style={{
-                  paddingLeft: 5,
-                }}
-              >
-                <Placeholder.Box
-                  animate="fade"
-                  color={Colors.grey}
-                  width={posterWidth}
-                  height={posterHeight}
-                  radius={4}
-                />
-              </View>
-            ))
-            }
-          </View> :
-          <FlatList
-            horizontal
-            data={this.props.data}
-            renderItem={this.renderItem}
-            showsHorizontalScrollIndicator={false}
-            ListHeaderComponent={() => <View style={{ width: 10 }} />}
-            ListFooterComponent={() => <View style={{ width: 10 }} />}
-            ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
-            keyExtractor={(item, index) => `movie-${index}`}
-          />
-        }
+        <FlatList
+          horizontal
+          data={this.props.data}
+          renderItem={this.renderItem}
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <View style={{ width: 10 }} />}
+          ListFooterComponent={() => <View style={{ width: 10 }} />}
+          ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
     );
   }
@@ -93,6 +60,4 @@ export default class MovieList extends React.Component {
 MovieList.propTypes = {
   title: PropTypes.string.isRequired,
   data: PropTypes.array,
-  onPress: PropTypes.func.isRequired,
-  loading: PropTypes.bool,
 };

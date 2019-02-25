@@ -9,12 +9,10 @@ import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import API from '../config/API';
 import Colors from '../config/Colors';
-import Label from './Label';
-import MovieList from './MovieList';
-
-const MAX_HEADER_HEIGHT = 300;
+import Label from '../components/Label';
+import MovieList from '../components/MovieList';
+import { MAX_HEADER_HEIGHT } from '../config/Utils';
 
 import {
   getPerson,

@@ -12,21 +12,16 @@ import moment from 'moment';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import Lightbox from 'react-native-lightbox';
 import Colors from '../config/Colors';
-import Label from './Label';
-import MovieList from './MovieList';
-import PersonList from './PersonList';
-import VideoList from './VideoList';
+import Label from '../components/Label';
+import MovieList from '../components/MovieList';
+import PersonList from '../components/PersonList';
+import VideoList from '../components/VideoList';
+import Ratings from '../components/Ratings';
+import { MAX_HEADER_HEIGHT } from '../config/Utils';
 
 import {
   getMovie,
 } from '../actions';
-
-const MAX_HEADER_HEIGHT = 300;
-export const ratingImg = {
-  'Internet Movie Database': require('../../assets/img/imdb.png'),
-  'Metacritic': require('../../assets/img/metacritic.png'),
-  'Rotten Tomatoes': require('../../assets/img/rotten_tomatoes.png'),
-};
 
 class Movie extends React.Component {
   componentWillMount() {
@@ -37,14 +32,6 @@ class Movie extends React.Component {
     const id = navigation.getParam('id');
 
     getMovie(id);
-  }
-
-  goToDetails = id => () => {
-    this.props.navigation.navigate({ routeName: 'Movie', params: { id }, key: id });
-  }
-
-  goToPersonDetails = id => () => {
-    this.props.navigation.navigate({ routeName: 'Person', params: { id }, key: id });
   }
 
   renderHeader = () => {
@@ -213,52 +200,9 @@ class Movie extends React.Component {
             </View>
           </View>
 
-          {ratings && ratings.length > 0 ?
-            <View
-              style={styles.detailBlock}
-            >
-              <Label
-                fontWeight={200}
-                style={styles.title}
-              >
-                Rating
-              </Label>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}
-              >
-                {ratings.map(rating => (
-                  <View
-                    key={rating.Source}
-                    style={{
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Image
-                      resizeMode="contain"
-                      source={ratingImg[rating.Source]}
-                      style={{
-                        height: 50,
-                        width: 50,
-                      }}
-                    />
-                    <Label
-                      style={{
-                        paddingTop: 5,
-                        color: Colors.white,
-                      }}
-                    >
-                      {rating.Value}
-                    </Label>
-                  </View>
-                ))}
-              </View>
-            </View>
-            : null
-          }
+          <Ratings
+            ratings={ratings}
+          />
 
           <View
             style={styles.detailBlock}
@@ -283,19 +227,16 @@ class Movie extends React.Component {
           <PersonList
             title="Cast"
             data={cast}
-            onPress={this.goToPersonDetails}
           />
 
           <PersonList
             title="Crew"
             data={crew}
-            onPress={this.goToPersonDetails}
           />
 
           <MovieList
             title="Similar Movies"
             data={similar}
-            onPress={this.goToDetails}
           />
 
         </ParallaxScrollView>

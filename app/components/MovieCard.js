@@ -5,26 +5,37 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo';
 import PropTypes from 'prop-types';
+import { withNavigation } from 'react-navigation';
 import Colors from '../config/Colors';
 import Touchable from './Touchable';
 import Label from './Label';
+import { getTitleAndYear } from '../config/Utils';
 
-export default class Poster extends React.Component {
-  render() {
+class MovieCard extends React.Component {
+  goToMovie = () => {
     const {
-      onPress,
+      id,
+      navigation: {
+        navigate
+      },
+    } = this.props;
+    navigate({ routeName: 'Movie', params: { id }, key: id });
+  }
+
+  render() {
+    const { width } = Dimensions.get('window');
+    const {
       poster,
       title,
       year,
     } = this.props;
-    const { width } = Dimensions.get('window');
 
     const posterWidth = width / 3;
     const posterHeight = posterWidth * 1.55;
 
     return (
       <Touchable
-        onPress={onPress}
+        onPress={this.goToMovie}
         containerStyle={{
           overflow: 'hidden',
           borderRadius: 4,
@@ -52,7 +63,7 @@ export default class Poster extends React.Component {
                 color: Colors.white,
               }}
             >
-              {`${title} (${year})`}
+              {getTitleAndYear(title, year)}
             </Label>
           </LinearGradient>
         </ImageBackground>
@@ -61,9 +72,10 @@ export default class Poster extends React.Component {
   }
 }
 
-Poster.propTypes = {
-  onPress: PropTypes.func.isRequired,
+MovieCard.propTypes = {
   poster: PropTypes.string,
   title: PropTypes.string,
   year: PropTypes.string,
 };
+
+export default withNavigation(MovieCard);
