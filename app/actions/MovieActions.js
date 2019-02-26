@@ -27,10 +27,12 @@ import {
 
 import moment from 'moment';
 
-const baseUrl = 'https://api.themoviedb.org/3';
-const apiKey = '98cfd76c9dda6fa371610d72f2486cff';
-const omdbUrl = 'https://www.omdbapi.com/';
-const omdbKey = '87a63633';
+import {
+  baseUrl,
+  apiKey,
+  omdbUrl,
+  omdbKey,
+} from '../config/Utils';
 
 export const getPopularMovies = () => {
   return (dispatch) => {

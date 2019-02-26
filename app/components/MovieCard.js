@@ -15,11 +15,12 @@ class MovieCard extends React.Component {
   goToMovie = () => {
     const {
       id,
+      title,
       navigation: {
         navigate
       },
     } = this.props;
-    navigate({ routeName: 'Movie', params: { id }, key: id });
+    navigate({ routeName: 'Movie', params: { id, title }, key: id });
   }
 
   render() {
@@ -28,6 +29,7 @@ class MovieCard extends React.Component {
       poster,
       title,
       year,
+      rounded,
     } = this.props;
 
     const posterWidth = width / 3;
@@ -38,7 +40,7 @@ class MovieCard extends React.Component {
         onPress={this.goToMovie}
         containerStyle={{
           overflow: 'hidden',
-          borderRadius: 4,
+          borderRadius: rounded ? 4 : 0,
         }}
       >
         <ImageBackground
@@ -76,6 +78,11 @@ MovieCard.propTypes = {
   poster: PropTypes.string,
   title: PropTypes.string,
   year: PropTypes.string,
+  rounded: PropTypes.bool,
 };
+
+MovieCard.defaultProps = {
+  rounded: true,
+}
 
 export default withNavigation(MovieCard);

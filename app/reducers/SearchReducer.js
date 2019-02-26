@@ -14,6 +14,7 @@ export default (state = INITIAL_STATE, action) => {
     case SEARCH:
       return {
         ...state,
+        results: [],
         loading: true,
       };
     case SEARCH_SUCCESS:

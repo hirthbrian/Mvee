@@ -16,13 +16,10 @@ import {
 class Home extends React.Component {
   componentWillMount() {
     const {
-      navigation,
       getPopularMovies,
       getUpcomingMovies,
       getNowPlayingMovies,
     } = this.props;
-
-    navigation.setParams({ onSearch: this.onSearch });
 
     getPopularMovies();
     getUpcomingMovies();

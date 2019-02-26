@@ -15,11 +15,12 @@ class PersonCard extends React.Component {
   goToPerson = () => {
     const {
       id,
+      name,
       navigation: {
         navigate
       },
     } = this.props;
-    navigate({ routeName: 'Person', params: { id }, key: id });
+    navigate({ routeName: 'Person', params: { id, name }, key: id });
   }
 
   render() {
@@ -80,46 +81,6 @@ class PersonCard extends React.Component {
             {character || job}
           </Label>
         </View>
-
-        {/* <View
-          style={{
-            width: width / 5,
-            alignItems: 'center',
-          }}
-        >
-          <Image
-            style={{
-              borderRadius: 4,
-              width: width / 5,
-              height: (width / 5) * 1.55,
-              backgroundColor: Colors.blue,
-            }}
-            source={{ uri: picture }}
-          />
-          <Label
-            fontWeight={600}
-            style={{
-              fontSize: 12,
-              textAlign: 'center',
-              color: Colors.white,
-              paddingTop: 5,
-            }}
-            numberOfLines={2}
-          >
-            {name}
-          </Label>
-          <Label
-            style={{
-              fontSize: 10,
-              textAlign: 'center',
-              color: Colors.white,
-              paddingBottom: 5,
-            }}
-            numberOfLines={2}
-          >
-            {character || job}
-          </Label>
-        </View> */}
       </Touchable>
     );
   };

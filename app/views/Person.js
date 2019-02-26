@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Dimensions,
   Image,
-  StatusBar,
   View,
 } from 'react-native';
 import { LinearGradient } from 'expo';
@@ -10,6 +9,7 @@ import { connect } from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import Colors from '../config/Colors';
+import Loading from '../components/Loading';
 import Label from '../components/Label';
 import MovieList from '../components/MovieList';
 import { MAX_HEADER_HEIGHT } from '../config/Utils';
@@ -83,7 +83,7 @@ class Person extends React.Component {
   render() {
     const { person } = this.props;
 
-    if (!person) return null;
+    if (!person) return <Loading/>;
 
     const {
       name,

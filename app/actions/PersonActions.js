@@ -10,10 +10,12 @@ import {
   GET_PERSON_IMAGES_FAIL,
 } from './types';
 
-import moment from 'moment';
+import {
+  baseUrl,
+  apiKey,
+} from '../config/Utils';
 
-const baseUrl = 'https://api.themoviedb.org/3';
-const apiKey = '98cfd76c9dda6fa371610d72f2486cff';
+import moment from 'moment';
 
 export const getPerson = (id) => {
   return (dispatch) => {

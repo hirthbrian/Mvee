@@ -6,8 +6,11 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
+import {
+  Header,
+  HeaderBackButton
+} from 'react-navigation';
 import Colors from '../config/Colors';
-
 import {
   search
 } from '../actions';
@@ -26,27 +29,20 @@ class SearchBar extends React.Component {
   }
 
   render() {
+    const { onPress } = this.props;
     const { searchText } = this.state;
     return (
       <View
         style={{
           flexDirection: 'row',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           backgroundColor: Colors.red,
-          borderRadius: 4,
-          marginVertical: 10,
-          marginHorizontal: 15,
-          paddingVertical: 10,
-          paddingHorizontal: 15,
+          height: Header.HEIGHT
         }}
       >
-        <Image
-          source={require('../../assets/img/glass.png')}
-          style={{
-            width: 25,
-            height: 25,
-            tintColor: Colors.white
-          }}
+        <HeaderBackButton
+          onPress={onPress}
+          tintColor={Colors.white}
         />
         <TextInput
           autoFocus
@@ -57,9 +53,10 @@ class SearchBar extends React.Component {
           selectionColor={Colors.white}
           style={{
             flex: 1,
-            fontSize: 18,
+            fontSize: 20,
             fontFamily: 'plex',
-            paddingLeft: 10,
+            paddingBottom: 10,
+            paddingRight: 15,
             color: Colors.white,
           }}
         />

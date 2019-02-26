@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Dimensions,
   Image,
-  ActivityIndicator,
   StyleSheet,
   View,
 } from 'react-native';
@@ -13,6 +12,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import Lightbox from 'react-native-lightbox';
 import Colors from '../config/Colors';
 import Label from '../components/Label';
+import Loading from '../components/Loading';
 import MovieList from '../components/MovieList';
 import PersonList from '../components/PersonList';
 import VideoList from '../components/VideoList';
@@ -53,26 +53,11 @@ class Movie extends React.Component {
     );
   };
 
-  renderLoading = () => (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: Colors.blue,
-      }}
-    >
-      <ActivityIndicator
-        color={Colors.white}
-      />
-    </View>
-  )
-
   render() {
     const { width, height } = Dimensions.get('window');
     const { movie } = this.props;
 
-    if (!movie) return this.renderLoading();
+    if (!movie) return <Loading/>;
 
     const {
       title,

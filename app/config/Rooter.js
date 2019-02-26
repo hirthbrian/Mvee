@@ -8,23 +8,12 @@ import {
   createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
-import {
-  fromBottom,
-} from 'react-navigation-transitions'
 import Colors from './Colors';
 import Search from '../views/Search';
 import Movie from '../views/Movie';
 import Person from '../views/Person';
 import Home from '../views/Home';
-
-const handleCustomTransition = ({ scenes }) => {
-  const prevScene = scenes[scenes.length - 2];
-  const nextScene = scenes[scenes.length - 1];
-
-  if (nextScene.route.routeName === 'Search') {
-    return fromBottom();
-  }
-}
+import SearchBar from '../components/SearchBar';
 
 const RootStack = createStackNavigator({
   Home: {
@@ -32,7 +21,7 @@ const RootStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'Mvee',
       headerTintColor: Colors.white,
-      headerBackTitle: null,
+      headerBackTitle: 'Home',
       headerStyle: {
         backgroundColor: Colors.red,
       },
@@ -42,9 +31,6 @@ const RootStack = createStackNavigator({
       },
       headerLeftContainerStyle: {
         paddingLeft: 10,
-      },
-      headerRightContainerStyle: {
-        paddingRight: 10,
       },
       headerLeft: (
         <TouchableWithoutFeedback
@@ -60,28 +46,24 @@ const RootStack = createStackNavigator({
           />
         </TouchableWithoutFeedback>
       ),
-      headerRight: (
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{
-            width: 25,
-            height: 25,
-          }}
-        />
-      )
     }),
   },
   Search: {
     screen: Search,
-    navigationOptions: () => ({
-      header: null
+    navigationOptions: ({ navigation }) => ({
+      header: <SearchBar onPress={() => navigation.goBack()} />,
+      headerTintColor: Colors.white,
+      headerBackTitle: 'Search',
     })
   },
   Movie: {
     screen: Movie,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTransparent: true,
       headerBackground: <View style={{ flex: 1, backgroundColor: Colors.transparent }} />,
+      headerTintColor: Colors.white,
+      headerBackTitle: navigation.getParam('title'),
+      headerTruncatedBackTitle: navigation.getParam('title').slice(0, 10) + '...',
       headerStyle: {
         borderBottomWidth: 0,
         elevation: 0,
@@ -90,9 +72,12 @@ const RootStack = createStackNavigator({
   },
   Person: {
     screen: Person,
-    navigationOptions: () => ({
+    navigationOptions: ({ navigation }) => ({
       headerTransparent: true,
       headerBackground: <View style={{ flex: 1, backgroundColor: Colors.transparent }} />,
+      headerTintColor: Colors.white,
+      headerBackTitle: navigation.getParam('name'),
+      headerTruncatedBackTitle: navigation.getParam('name').slice(0, 10) + '...',
       headerStyle: {
         borderBottomWidth: 0,
         elevation: 0,
@@ -101,7 +86,7 @@ const RootStack = createStackNavigator({
   },
 }, {
     headerMode: 'screen',
-    transitionConfig: (nav) => handleCustomTransition(nav),
+    // transitionConfig: (nav) => handleCustomTransition(nav),
     navigationOptions: {
       headerTintColor: Colors.white,
       headerBackTitleStyle: {

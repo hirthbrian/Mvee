@@ -3,12 +3,12 @@ import {
   View,
   Image,
   FlatList,
-  SafeAreaView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import Colors from '../config/Colors';
 import SearchBar from '../components/SearchBar';
 import MovieCard from '../components/MovieCard';
+import Loading from '../components/Loading';
 
 class Search extends React.Component {
   renderItem = ({ item }) => (
@@ -17,6 +17,7 @@ class Search extends React.Component {
       title={item.title}
       year={item.year}
       poster={item.poster}
+      rounded={false}
     />
   );
 
@@ -31,40 +32,43 @@ class Search extends React.Component {
       <Image
         source={require('../../assets/logo.png')}
         style={{
-          width: 128,
-          height: 128,
+          width: 64,
+          height: 64,
+          opacity: 0.8,
         }}
       />
     </View>
   )
 
   render() {
-    const { searchResults } = this.props;
+    const {
+      loading,
+      searchResults,
+    } = this.props;
+
+    if (loading) return <Loading />
+
     return (
-      <SafeAreaView
+      <FlatList
         style={{
-          flex: 1,
           backgroundColor: Colors.blue,
         }}
-      >
-        <SearchBar />
-        <FlatList
-          contentContainerStyle={{
-            flexGrow: 1,
-          }}
-          numColumns={3}
-          data={searchResults}
-          renderItem={this.renderItem}
-          ListEmptyComponent={this.renderEmpty}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </SafeAreaView>
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+        numColumns={3}
+        data={searchResults}
+        renderItem={this.renderItem}
+        ListEmptyComponent={this.renderEmpty}
+        keyExtractor={(item, index) => index.toString()}
+      />
     );
   }
 }
 
-const mapStateToProps = ({ search, movies }) => ({
+const mapStateToProps = ({ search }) => ({
   searchResults: search.results,
+  loading: search.loading,
 });
 
 export default connect(mapStateToProps, {})(Search)
