@@ -1,5 +1,8 @@
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+} from 'react-native';
+import { Haptic } from 'expo';
 import { View as AView } from 'react-native-animatable';
 import PropTypes from 'prop-types';
 
@@ -18,12 +21,18 @@ export default class Touchable extends React.Component {
     this.touchableRef.transitionTo({ scale: 1, opacity: 1 });
   };
 
+  onPress = () => {
+    const { onPress } = this.props;
+    Haptic.selection();
+    onPress();
+  }
+
   render() {
     return (
       <TouchableWithoutFeedback
         onPressIn={this.onPressIn}
         onPressOut={this.onPressOut}
-        {...this.props}
+        onPress={this.onPress}
       >
         <AView
           ref={(ref) => { this.touchableRef = ref; }}

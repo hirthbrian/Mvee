@@ -51,6 +51,7 @@ class SearchBar extends React.Component {
           value={searchText}
           placeholderTextColor={Colors.white}
           selectionColor={Colors.white}
+          keyboardAppearance={'dark'}
           style={{
             flex: 1,
             fontSize: 20,

@@ -154,18 +154,22 @@ export const getMovieCredits = (id) => {
       .then(response => {
         const movie = {
           id: response.id,
-          cast: response.cast.map(item => ({
-            id: item.id,
-            name: item.name,
-            character: item.character,
-            picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
-          })),
-          crew: response.crew.map(item => ({
-            id: item.id,
-            name: item.name,
-            job: item.job,
-            picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
-          })),
+          cast: response.cast
+            .filter(item => item.profile_path)
+            .map(item => ({
+              id: item.id,
+              name: item.name,
+              character: item.character,
+              picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
+            })),
+          crew: response.crew
+            .filter(item => item.profile_path)
+            .map(item => ({
+              id: item.id,
+              name: item.name,
+              job: item.job,
+              picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
+            })),
         }
         dispatch({ type: GET_MOVIE_CREDITS_SUCCESS, payload: movie });
       })
@@ -208,12 +212,15 @@ export const getMovieSimilar = (id) => {
       .then(response => {
         const movie = {
           id: id,
-          similar: response.results.map(item => ({
-            id: item.id,
-            title: item.title,
-            year: item.release_date && moment(item.release_date).format('Y'),
-            poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
-          })),
+          similar: response.results
+            .filter(item => item.poster_path && item.vote_count)
+            .sort((itemA, itemB) => itemA.popularity < itemB.popularity)
+            .map(item => ({
+              id: item.id,
+              title: item.title,
+              year: item.release_date && moment(item.release_date).format('Y'),
+              poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
+            })),
         }
         dispatch({ type: GET_MOVIE_SIMILAR_SUCCESS, payload: movie });
       })

@@ -12,6 +12,7 @@ import {
   getUpcomingMovies,
   getNowPlayingMovies,
 } from '../actions';
+import Loading from '../components/Loading';
 
 class Home extends React.Component {
   componentWillMount() {
@@ -38,7 +39,10 @@ class Home extends React.Component {
       nowPlaying,
       popular,
       upcoming,
+      loading,
     } = this.props;
+
+    if (loading) return <Loading />
 
     return (
       <ScrollView
@@ -67,6 +71,9 @@ const mapStateToProps = ({ movies }) => ({
   popular: movies.popular,
   upcoming: movies.upcoming,
   nowPlaying: movies.nowPlaying,
+  loading: (movies.popularLoading ||
+    movies.upcomingLoading ||
+    movies.nowPlayingLoading)
 });
 
 export default connect(mapStateToProps, { getPopularMovies, getUpcomingMovies, getNowPlayingMovies })(Home)

@@ -55,9 +55,12 @@ class Movie extends React.Component {
 
   render() {
     const { width, height } = Dimensions.get('window');
-    const { movie } = this.props;
+    const {
+      movie,
+      loading,
+    } = this.props;
 
-    if (!movie) return <Loading/>;
+    if (loading || !movie) return <Loading />;
 
     const {
       title,
@@ -248,6 +251,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = ({ movies }, props) => ({
   movie: movies[props.navigation.state.params.id],
+  loading: (movies.movieLoading ||
+    movies.ratingsLoading ||
+    movies.creditsLoading ||
+    movies.videosLoading ||
+    movies.similarLoading)
 });
 
 export default connect(mapStateToProps, { getMovie })(Movie)

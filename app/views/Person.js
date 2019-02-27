@@ -83,7 +83,7 @@ class Person extends React.Component {
   render() {
     const { person } = this.props;
 
-    if (!person) return <Loading/>;
+    if (!person) return <Loading />;
 
     const {
       name,

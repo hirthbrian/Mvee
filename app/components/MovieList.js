@@ -29,7 +29,13 @@ export default class MovieList extends React.Component {
   };
 
   render() {
-    const { title } = this.props;
+    const {
+      title,
+      data,
+    } = this.props;
+
+    if (data && data.length === 0) return null;
+
     return (
       <View>
         <Label
@@ -44,7 +50,7 @@ export default class MovieList extends React.Component {
         </Label>
         <FlatList
           horizontal
-          data={this.props.data}
+          data={data}
           renderItem={this.renderItem}
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={() => <View style={{ width: 10 }} />}
@@ -58,6 +64,6 @@ export default class MovieList extends React.Component {
 }
 
 MovieList.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   data: PropTypes.array,
 };

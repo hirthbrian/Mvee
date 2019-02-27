@@ -48,18 +48,24 @@ export const getPersonCredits = (id) => {
       .then(response => {
         const person = {
           id: response.id,
-          cast: response.cast.map(item => ({
-            id: item.id,
-            title: item.title,
-            year: item.release_date && moment(item.release_date).format('Y'),
-            poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
-          })),
-          crew: response.crew.map(item => ({
-            id: item.id,
-            title: item.title,
-            year: item.release_date && moment(item.release_date).format('Y'),
-            poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
-          })),
+          cast: response.cast
+            .filter(item => item.poster_path && item.vote_count)
+            .sort((itemA, itemB) => itemA.popularity < itemB.popularity)
+            .map(item => ({
+              id: item.id,
+              title: item.title,
+              year: item.release_date && moment(item.release_date).format('Y'),
+              poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
+            })),
+          crew: response.crew
+            .filter(item => item.poster_path && item.vote_count)
+            .sort((itemA, itemB) => itemA.popularity < itemB.popularity)
+            .map(item => ({
+              id: item.id,
+              title: item.title,
+              year: item.release_date && moment(item.release_date).format('Y'),
+              poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
+            })),
         }
         dispatch({ type: GET_PERSON_CREDITS_SUCCESS, payload: person });
       })

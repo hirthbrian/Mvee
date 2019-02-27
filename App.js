@@ -1,7 +1,10 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import {
-  Font
+  StatusBar,
+} from 'react-native';
+import {
+  Font,
+  Asset,
 } from 'expo';
 
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -39,7 +42,10 @@ export default class App extends React.Component {
       'plex-extra-light': require('./assets/fonts/IBMPlexSans-ExtraLight.ttf'),
       'plex': require('./assets/fonts/IBMPlexSans-Regular.ttf'),
       'plex-semi-bold': require('./assets/fonts/IBMPlexSans-SemiBold.ttf'),
-    }).then(() => {
+    }).then(async () => {
+      await Asset.fromModule(require('./assets/img/imdb.png')).downloadAsync();
+      await Asset.fromModule(require('./assets/img/metacritic.png')).downloadAsync();
+      await Asset.fromModule(require('./assets/img/rotten_tomatoes.png')).downloadAsync();
       this.setState({ fontLoaded: true });
     });
   }
