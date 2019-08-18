@@ -5,7 +5,7 @@ import {
   ImageBackground,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 import { withNavigation } from 'react-navigation';
 import Colors from '../config/Colors';
 import Label from './Label';

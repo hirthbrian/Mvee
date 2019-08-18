@@ -2,11 +2,7 @@ import React from 'react';
 import {
   StatusBar,
 } from 'react-native';
-import {
-  Font,
-  Asset,
-} from 'expo';
-
+import * as Font from 'expo-font';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
@@ -37,17 +33,13 @@ export default class App extends React.Component {
     };
   }
 
-  componentWillMount() {
-    Font.loadAsync({
+  async componentWillMount() {
+    await Font.loadAsync({
       'plex-extra-light': require('./assets/fonts/IBMPlexSans-ExtraLight.ttf'),
       'plex': require('./assets/fonts/IBMPlexSans-Regular.ttf'),
       'plex-semi-bold': require('./assets/fonts/IBMPlexSans-SemiBold.ttf'),
-    }).then(async () => {
-      await Asset.fromModule(require('./assets/img/imdb.png')).downloadAsync();
-      await Asset.fromModule(require('./assets/img/metacritic.png')).downloadAsync();
-      await Asset.fromModule(require('./assets/img/rotten_tomatoes.png')).downloadAsync();
-      this.setState({ fontLoaded: true });
     });
+    this.setState({ fontLoaded: true });
   }
 
   render() {

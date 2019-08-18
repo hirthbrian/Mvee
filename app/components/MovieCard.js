@@ -3,7 +3,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
 import Colors from '../config/Colors';

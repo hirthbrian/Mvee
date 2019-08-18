@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
