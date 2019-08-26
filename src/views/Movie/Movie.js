@@ -10,7 +10,7 @@ import Colors from '../../config/Colors';
 import Label from '../../components/Label';
 import Loading from '../../components/Loading';
 import MovieList from '../../components/MovieList';
-import PersonList from '../../components/PersonList';
+import CastList from '../../components/CastList';
 import VideoList from '../../components/VideoList';
 import Ratings from '../../components/Ratings';
 import {
@@ -217,7 +217,7 @@ class Movie extends React.Component {
           data={videos}
         />
 
-        <PersonList
+        <CastList
           title="Cast"
           data={actors}
         />

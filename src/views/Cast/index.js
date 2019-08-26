@@ -2,15 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import {
-  getPerson,
-  getPersonCredits,
-  getPersonImages,
+  getCast,
+  getCastCredits,
+  getCastImages,
 } from '../../actions';
 
-import Person from './Person';
+import Cast from './Cast';
 
-const mapStateToProps = ({ persons }, { navigation }) => {
-  const item = persons[navigation.state.params.id];
+const mapStateToProps = ({ casts }, { navigation }) => {
+  const item = casts[navigation.state.params.id];
   return {
     loading: item ? item.isFetching : true,
     person: item,
@@ -19,13 +19,13 @@ const mapStateToProps = ({ persons }, { navigation }) => {
 
 const mapDispatchToProps = (dispatch) => (
   bindActionCreators({
-    getPerson,
-    getPersonCredits,
-    getPersonImages,
+    getCast,
+    getCastCredits,
+    getCastImages,
   }, dispatch)
 );
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Person);
+)(Cast);

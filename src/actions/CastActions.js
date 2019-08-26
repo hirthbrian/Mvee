@@ -1,9 +1,9 @@
 import moment from 'moment';
 
 import {
-  FETCH_PERSON_REQUEST,
-  FETCH_PERSON_SUCCESS,
-  FETCH_PERSON_FAILURE,
+  FETCH_CAST_REQUEST,
+  FETCH_CAST_SUCCESS,
+  FETCH_CAST_FAILURE,
 } from './types';
 
 import {
@@ -11,7 +11,7 @@ import {
   axiosInstance,
 } from '../config/Utils';
 
-export const getPersonCredits = (id) => (
+export const getCastCredits = (id) => (
   axiosInstance.get(`/person/${id}/movie_credits`, {
     params: {
       api_key: apiKey,
@@ -39,7 +39,7 @@ export const getPersonCredits = (id) => (
   }))
 );
 
-export const getPersonImages = (id) => (
+export const getCastImages = (id) => (
   axiosInstance.get(`/person/${id}/tagged_images`, {
     params: {
       api_key: apiKey,
@@ -49,19 +49,19 @@ export const getPersonImages = (id) => (
   ))
 );
 
-export const getPerson = (id) => (dispatch) => {
-  dispatch({ type: FETCH_PERSON_REQUEST, payload: { id } });
+export const getCast = (id) => (dispatch) => {
+  dispatch({ type: FETCH_CAST_REQUEST, payload: { id } });
   axiosInstance.get(`/person/${id}`, {
     params: {
       api_key: apiKey,
     },
   }).then(({ data }) => {
-    const credits = getPersonCredits(data.id);
-    const gallery = getPersonImages(data.id);
+    const credits = getCastCredits(data.id);
+    const gallery = getCastImages(data.id);
 
     Promise.all([credits, gallery])
       .then((values) => {
-        const person = {
+        const cast = {
           id: data.id,
           name: data.name,
           birthday: data.birthday && moment(data.birthday).format('MMMM Do YYYY'),
@@ -71,12 +71,12 @@ export const getPerson = (id) => (dispatch) => {
           credits: values[0],
           gallery: values[1],
         };
-        dispatch({ type: FETCH_PERSON_SUCCESS, payload: person });
+        dispatch({ type: FETCH_CAST_SUCCESS, payload: cast });
       })
       .catch(() => {
-        dispatch({ type: FETCH_PERSON_FAILURE, payload: { id } });
+        dispatch({ type: FETCH_CAST_FAILURE, payload: { id } });
       });
   }).catch(() => {
-    dispatch({ type: FETCH_PERSON_FAILURE, payload: { id } });
+    dispatch({ type: FETCH_CAST_FAILURE, payload: { id } });
   });
 };

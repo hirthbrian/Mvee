@@ -1,4 +1,4 @@
 export * from './HomepageActions';
 export * from './MovieActions';
-export * from './PersonActions';
+export * from './CastActions';
 export * from './SearchActions';

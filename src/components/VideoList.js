@@ -36,8 +36,6 @@ export default class VideoList extends React.Component {
   render() {
     const { data } = this.props;
 
-    if (!data || data.length === 0) return null
-
     return (
       <View>
         <Label
@@ -52,7 +50,7 @@ export default class VideoList extends React.Component {
         </Label>
         <FlatList
           horizontal
-          data={this.props.data}
+          data={data}
           renderItem={this.renderItem}
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={() => <View style={{ width: 10 }} />}

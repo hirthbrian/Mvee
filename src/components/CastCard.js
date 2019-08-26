@@ -10,8 +10,8 @@ import Colors from '../config/Colors';
 import Label from './Label';
 import Touchable from './Touchable'
 
-class PersonCard extends React.Component {
-  goToPerson = () => {
+class CastCard extends React.Component {
+  goToCast = () => {
     const {
       id,
       name,
@@ -19,7 +19,7 @@ class PersonCard extends React.Component {
         navigate
       },
     } = this.props;
-    navigate({ routeName: 'Person', params: { id, name }, key: id });
+    navigate({ routeName: 'Cast', params: { id, name }, key: id });
   }
 
   render() {
@@ -86,7 +86,7 @@ class PersonCard extends React.Component {
 
     return (
       <Touchable
-        onPress={this.goToPerson}
+        onPress={this.goToCast}
       >
         <View
           style={{
@@ -128,4 +128,4 @@ class PersonCard extends React.Component {
   };
 }
 
-export default withNavigation(PersonCard);
+export default withNavigation(CastCard);

@@ -10,7 +10,7 @@ import {
 } from 'react-navigation';
 import Colors from './Colors';
 import Movie from '../views/Movie';
-import Person from '../views/Person';
+import Cast from '../views/Cast';
 import Home from '../views/Home';
 
 const RootStack = createStackNavigator({
@@ -63,8 +63,8 @@ const RootStack = createStackNavigator({
       },
     }),
   },
-  Person: {
-    screen: Person,
+  Cast: {
+    screen: Cast,
     navigationOptions: ({ navigation }) => ({
       headerTransparent: true,
       headerBackground: <View style={{ flex: 1, backgroundColor: Colors.transparent }} />,

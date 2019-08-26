@@ -5,10 +5,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Colors from '../config/Colors';
-import PersonCard from './PersonCard';
+import CastCard from './CastCard';
 import Label from './Label';
 
-export default class PersonList extends React.Component {
+export default class CastList extends React.Component {
   renderItem = ({ item }) => {
     const {
       id,
@@ -19,7 +19,7 @@ export default class PersonList extends React.Component {
     } = item;
 
     return (
-      <PersonCard
+      <CastCard
         id={id}
         name={name}
         job={job}
@@ -52,13 +52,13 @@ export default class PersonList extends React.Component {
           ListFooterComponent={() => <View style={{ width: 10 }} />}
           ItemSeparatorComponent={() => <View style={{ width: 5 }} />}
           keyExtractor={(item, index) => index.toString()}
-          />
+        />
       </View>
     );
   }
 }
 
-PersonList.propTypes = {
+CastList.propTypes = {
   title: PropTypes.string.isRequired,
   data: PropTypes.array,
 };

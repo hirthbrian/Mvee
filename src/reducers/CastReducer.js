@@ -1,7 +1,7 @@
 import {
-  FETCH_PERSON_REQUEST,
-  FETCH_PERSON_SUCCESS,
-  FETCH_PERSON_FAILURE,
+  FETCH_CAST_REQUEST,
+  FETCH_CAST_SUCCESS,
+  FETCH_CAST_FAILURE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -14,7 +14,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FETCH_PERSON_REQUEST:
+    case FETCH_CAST_REQUEST:
       return {
         ...state,
         [action.payload.id]: {
@@ -22,7 +22,7 @@ export default (state = INITIAL_STATE, action) => {
           isFetching: true,
         },
       };
-    case FETCH_PERSON_SUCCESS:
+    case FETCH_CAST_SUCCESS:
       return {
         ...state,
         [action.payload.id]: {
@@ -30,7 +30,7 @@ export default (state = INITIAL_STATE, action) => {
           isFetching: false,
         },
       };
-    case FETCH_PERSON_FAILURE:
+    case FETCH_CAST_FAILURE:
       return {
         ...state,
         [action.payload.id]: {

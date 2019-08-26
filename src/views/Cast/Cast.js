@@ -12,12 +12,12 @@ import Label from '../../components/Label';
 import MovieList from '../../components/MovieList';
 import { MAX_HEADER_HEIGHT } from '../../config/Utils';
 
-class Person extends React.Component {
+class Cast extends React.Component {
   constructor(props) {
     super(props);
     const {
       navigation,
-      getPerson,
+      getCast,
     } = props;
 
     const { width } = Dimensions.get('window');
@@ -29,7 +29,7 @@ class Person extends React.Component {
 
     const id = navigation.getParam('id');
 
-    getPerson(id);
+    getCast(id);
   }
 
   goToDetails = (movie) => () => {
@@ -138,4 +138,4 @@ class Person extends React.Component {
   }
 }
 
-export default Person;
+export default Cast;
