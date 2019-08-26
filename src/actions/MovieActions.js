@@ -28,24 +28,36 @@ export const getMovieCredits = (id) => (
     params: {
       api_key: apiKey,
     },
-  }).then(({ data }) => (
-    data.cast
-      .filter(item => item.profile_path)
-      .map(item => ({
+  }).then(({ data }) => {
+    const actors = data.cast
+      .filter((item) => item.profile_path)
+      .map((item) => ({
         id: item.id,
         name: item.name,
         character: item.character,
         picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
-      }))
-    // crew: data.crew
-    //   .filter(item => item.profile_path)
-    //   .map(item => ({
-    //     id: item.id,
-    //     name: item.name,
-    //     job: item.job,
-    //     picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
-    //   })),
-  ))
+      }));
+
+    const directors = data.crew
+      .filter((item) => item.job === 'Director')
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+      }));
+
+    const writers = data.crew
+      .filter((item) => item.department === 'Writing')
+      .map((item) => ({
+        id: item.id,
+        name: item.name,
+      }));
+
+    return ({
+      actors,
+      directors,
+      writers,
+    });
+  })
 );
 
 export const getMovieVideos = (id) => (
@@ -70,9 +82,9 @@ export const getMovieSimilar = (id) => (
     },
   }).then(({ data }) => (
     data.results
-      .filter(item => item.poster_path && item.vote_count)
+      .filter((item) => item.poster_path && item.vote_count)
       .sort((itemA, itemB) => itemA.popularity < itemB.popularity)
-      .map(item => ({
+      .map((item) => ({
         id: item.id,
         title: item.title,
         year: item.release_date && moment(item.release_date).format('Y'),
@@ -106,7 +118,9 @@ export const getMovie = (id) => (dispatch) => {
           poster: `https://image.tmdb.org/t/p/w780/${data.poster_path}`,
           backdrop: `https://image.tmdb.org/t/p/w780/${data.backdrop_path}`,
           ratings: values[0],
-          cast: values[1],
+          actors: values[1].actors,
+          directors: values[1].directors,
+          writers: values[1].writers,
           videos: values[2],
           similar: values[3],
         };

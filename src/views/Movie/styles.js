@@ -15,4 +15,9 @@ export default StyleSheet.create({
   description: {
     color: Colors.lightBlack,
   },
+  separator: {
+    height: 1,
+    backgroundColor: Colors.grey,
+    marginVertical: 3,
+  },
 });

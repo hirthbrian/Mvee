@@ -13,7 +13,10 @@ import MovieList from '../../components/MovieList';
 import PersonList from '../../components/PersonList';
 import VideoList from '../../components/VideoList';
 import Ratings from '../../components/Ratings';
-import { MAX_HEADER_HEIGHT } from '../../config/Utils';
+import {
+  MAX_HEADER_HEIGHT,
+  convertMinsToHrsMins,
+} from '../../config/Utils';
 
 import styles from './styles';
 
@@ -48,20 +51,18 @@ class Movie extends React.Component {
     );
   };
 
-  renderTitleBlock = () => {
+  renderTitle = () => {
     const {
       movie: {
         title,
         poster,
         tagline,
-        date,
-        runtime,
       },
     } = this.props;
 
     const { width } = Dimensions.get('window');
 
-    const posterWidth = width / 4;
+    const posterWidth = width / 3;
     const posterHeight = posterWidth * 1.55;
 
     return (
@@ -71,39 +72,24 @@ class Movie extends React.Component {
           paddingVertical: 15,
         }}
       >
-        <View
+        <Image
+          source={{ uri: poster }}
           style={{
-            paddingBottom: 5,
-            flexDirection: 'row',
+            alignSelf: 'center',
+            borderColor: Colors.white,
+            borderWidth: 2,
+            borderRadius: 2,
+            marginTop: -150,
+            width: posterWidth,
+            height: posterHeight,
+            backgroundColor: Colors.white,
           }}
-        >
-          <Image
-            source={{ uri: poster }}
-            style={{
-              borderColor: Colors.white,
-              borderWidth: 2,
-              borderRadius: 2,
-              marginTop: -posterHeight + 50,
-              width: posterWidth,
-              height: posterHeight,
-            }}
-          />
-          <Label
-            fontWeight={200}
-            style={{
-              flex: 1,
-              paddingLeft: 10,
-              color: Colors.lightBlack,
-              fontSize: 18,
-            }}
-            numberOfLines={2}
-          >
-            {tagline}
-          </Label>
-        </View>
+        />
 
         <Label
+          fontWeight={200}
           style={{
+            textAlign: 'center',
             color: Colors.black,
             fontSize: 32,
           }}
@@ -111,20 +97,67 @@ class Movie extends React.Component {
           {title}
         </Label>
 
-        <Label
-          style={{
-            color: Colors.lightBlack,
-          }}
-        >
-          {`Release Date: ${moment(date).format('MMMM Do YYYY')}`}
-        </Label>
-        <Label
-          style={{
-            color: Colors.lightBlack,
-          }}
-        >
-          {`Runtime: ${runtime} min`}
-        </Label>
+        {tagline.length > 0 && (
+          <Label
+            fontWeight={200}
+            style={{
+              textAlign: 'center',
+              color: Colors.lightBlack,
+              fontSize: 16,
+            }}
+            numberOfLines={2}
+          >
+            {tagline}
+          </Label>
+        )}
+      </View>
+    );
+  }
+
+  renderDetailText = (title, subtitle) => (
+    <View
+      style={{
+        flex: 1,
+        paddingVertical: 3,
+        flexDirection: 'row',
+      }}
+    >
+      <Label>
+        {`${title}: `}
+      </Label>
+      <Label
+        fontWeight={200}
+        style={{
+          flex: 1,
+          color: Colors.lightBlack,
+        }}
+      >
+        {subtitle}
+      </Label>
+    </View>
+
+  )
+
+  renderDetails = () => {
+    const {
+      movie: {
+        date,
+        runtime,
+        directors,
+        writers,
+      },
+    } = this.props;
+
+    return (
+      <View
+        style={{
+          padding: 10,
+        }}
+      >
+        {this.renderDetailText('Director', directors.map((item) => item.name).join(', '))}
+        {this.renderDetailText('Writers', writers.map((item) => item.name).join(', '))}
+        {this.renderDetailText('Release Date', moment(date).format('MMMM Do YYYY'))}
+        {this.renderDetailText('Runtime', convertMinsToHrsMins(runtime))}
       </View>
     );
   }
@@ -135,12 +168,14 @@ class Movie extends React.Component {
     if (loading) return <Loading />;
 
     const {
-      ratings,
-      videos,
-      cast,
-      similar,
-      synopsis,
-    } = this.props.movie;
+      movie: {
+        ratings,
+        videos,
+        actors,
+        similar,
+        synopsis,
+      },
+    } = this.props;
 
     return (
       <ParallaxScrollView
@@ -155,7 +190,8 @@ class Movie extends React.Component {
           backgroundColor: Colors.white,
         }}
       >
-        {this.renderTitleBlock()}
+        {this.renderTitle()}
+        {this.renderDetails()}
 
         <Ratings
           ratings={ratings}
@@ -168,7 +204,7 @@ class Movie extends React.Component {
             fontWeight={200}
             style={styles.title}
           >
-            Synopsis
+            Summary
           </Label>
           <Label
             style={styles.description}
@@ -183,7 +219,7 @@ class Movie extends React.Component {
 
         <PersonList
           title="Cast"
-          data={cast}
+          data={actors}
         />
 
         <MovieList

@@ -33,6 +33,58 @@ class PersonCard extends React.Component {
     } = this.props;
 
     return (
+      <View
+        style={{
+          width: width / 5,
+        }}
+      >
+        <Touchable
+          onPress={this.goToMovie}
+          containerStyle={{
+            overflow: 'hidden',
+            borderRadius: 2,
+          }}
+        >
+          <Image
+            style={{
+              width: width / 5,
+              height: (width / 5) * 1.5,
+              justifyContent: 'flex-end',
+            }}
+            source={{ uri: picture }}
+          />
+        </Touchable>
+        <View
+          style={{
+            paddingVertical: 2,
+            paddingHorizontal: 5,
+          }}
+        >
+          <Label
+            style={{
+              fontSize: 10,
+              textAlign: 'center',
+              color: Colors.black,
+            }}
+            numberOfLines={2}
+          >
+            {name}
+          </Label>
+          <Label
+            style={{
+              fontSize: 10,
+              textAlign: 'center',
+              color: Colors.lightBlack,
+            }}
+            numberOfLines={1}
+          >
+            {character}
+          </Label>
+        </View>
+      </View>
+    );
+
+    return (
       <Touchable
         onPress={this.goToPerson}
       >
@@ -76,4 +128,4 @@ class PersonCard extends React.Component {
   };
 }
 
-export default withNavigation(PersonCard)
+export default withNavigation(PersonCard);
