@@ -11,14 +11,14 @@ import {
 import {
   axiosInstance,
   apiKey,
-} from '../config/Utils';
+} from '../utils';
 
 export const search = (query, page = 1) => (dispatch) => {
   dispatch({ type: SEARCH_REQUEST });
   axiosInstance.get('/search/movie', {
     params: {
       page,
-      query: escape(query),
+      query,
       api_key: apiKey,
     },
   }).then(({ data }) => {
@@ -28,6 +28,7 @@ export const search = (query, page = 1) => (dispatch) => {
         id: item.id,
         title: item.title,
         overview: item.overview,
+        voteAverage: item.vote_average,
         year: item.release_date && moment(item.release_date).format('Y'),
         poster: `https://image.tmdb.org/t/p/w185/${item.poster_path}`,
       }));

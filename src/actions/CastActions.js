@@ -9,7 +9,7 @@ import {
 import {
   apiKey,
   axiosInstance,
-} from '../config/Utils';
+} from '../utils';
 
 export const getCastCredits = (id) => (
   axiosInstance.get(`/person/${id}/movie_credits`, {
@@ -64,8 +64,8 @@ export const getCast = (id) => (dispatch) => {
         const cast = {
           id: data.id,
           name: data.name,
-          birthday: data.birthday && moment(data.birthday).format('MMMM Do YYYY'),
-          deathday: data.deathday && moment(data.deathday).format('MMMM Do YYYY'),
+          birthday: data.birthday && moment(data.birthday).format('D MMM YYYY'),
+          deathday: data.deathday && moment(data.deathday).format('D MMM YYYY'),
           biography: data.biography,
           picture: `https://image.tmdb.org/t/p/w500/${data.profile_path}`,
           credits: values[0],

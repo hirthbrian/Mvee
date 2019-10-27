@@ -7,8 +7,9 @@ import {
 } from './types';
 
 import {
+  apiKey,
   axiosInstance,
-} from '../config/Utils';
+} from '../utils';
 
 const mapToPoster = (item) => ({
   id: item.id,
@@ -18,17 +19,29 @@ const mapToPoster = (item) => ({
 });
 
 export const getPopularMovies = () => (
-  axiosInstance.get('/movie/popular')
+  axiosInstance.get('/movie/popular', {
+    params: {
+      api_key: apiKey,
+    },
+  })
     .then(({ data }) => data.results.map(mapToPoster))
 );
 
 export const getUpcomingMovies = () => (
-  axiosInstance.get('/movie/upcoming')
+  axiosInstance.get('/movie/upcoming', {
+    params: {
+      api_key: apiKey,
+    },
+  })
     .then(({ data }) => data.results.map(mapToPoster))
 );
 
 export const getNowPlayingMovies = () => (
-  axiosInstance.get('/movie/now_playing')
+  axiosInstance.get('/movie/now_playing', {
+    params: {
+      api_key: apiKey,
+    },
+  })
     .then(({ data }) => data.results.map(mapToPoster))
 );
 
@@ -48,7 +61,8 @@ export const getHomepage = () => (dispatch) => {
       };
       dispatch({ type: FETCH_HOMPAGE_SUCCESS, payload: homepage });
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log('error', error.message)
       dispatch({ type: FETCH_HOMPAGE_FAILURE });
     });
 };

@@ -12,7 +12,7 @@ import {
   omdbUrl,
   omdbKey,
   axiosInstance,
-} from '../config/Utils';
+} from '../utils';
 
 export const getMovieRatings = (imdbId) => (
   axios.get(omdbUrl, {

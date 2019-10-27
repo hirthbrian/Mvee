@@ -1,8 +1,9 @@
 module.exports = {
-  parser: 'babel-eslint',
-  extends: 'airbnb',
-  rules: {
-    'react/jsx-filename-extension': 0,
-    'global-require': 0,
+  parser: '@typescript-eslint/parser',
+  extends: ['airbnb-typescript'],
+  plugins: ["@typescript-eslint"],
+  rules: {},
+  env: {
+    jest: true
   }
 };
