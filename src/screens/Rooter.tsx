@@ -37,9 +37,9 @@ const RootStack = createStackNavigator({
       headerLeftContainerStyle: {
         paddingLeft: 10,
       },
-      headerRightContainerStyle: {
-        paddingRight: 10,
-      },
+      // headerRightContainerStyle: {
+      //   paddingRight: 10,
+      // },
       headerLeft: (
         <TouchableWithoutFeedback
           onPress={navigation.getParam('onSearchPress')}
@@ -54,20 +54,20 @@ const RootStack = createStackNavigator({
           />
         </TouchableWithoutFeedback>
       ),
-      headerRight: (
-        <TouchableWithoutFeedback
-          onPress={() => { }}
-        >
-          <Image
-            source={moonIcon}
-            style={{
-              width: 25,
-              height: 25,
-              tintColor: Color.White,
-            }}
-          />
-        </TouchableWithoutFeedback>
-      ),
+      // headerRight: (
+      //   <TouchableWithoutFeedback
+      //     onPress={() => { }}
+      //   >
+      //     <Image
+      //       source={moonIcon}
+      //       style={{
+      //         width: 25,
+      //         height: 25,
+      //         tintColor: Color.White,
+      //       }}
+      //     />
+      //   </TouchableWithoutFeedback>
+      // ),
     }),
   },
   Movie: {

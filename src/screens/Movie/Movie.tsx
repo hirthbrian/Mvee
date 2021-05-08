@@ -22,136 +22,132 @@ import InfoText from '../../components/InfoText';
 import styles from './styles';
 import SectionTitle from '../../components/SectionTitle';
 
-const Movie = ({
-  getMovie,
-  navigation,
-  loading,
-  movie,
-}) => {
-  const { width } = Dimensions.get('window');
-  const posterWidth = width / 3;
-  const posterHeight = posterWidth * 1.55;
-
-  useEffect(() => {
+class Movie extends React.Component {
+  componentDidMount() {
+    const { getMovie } = this.props;
     getMovie(navigation.getParam('id'));
-  }, []);
+  }
 
-  if (loading) return <Loading />;
+  render() {
+    const {
+      ratings,
+      videos,
+      actors,
+      similar,
+      synopsis,
+      backdrop,
+      title,
+      poster,
+      tagline,
+      date,
+      runtime,
+      directors,
+      writers,
+    } = movie;
 
-  const {
-    ratings,
-    videos,
-    actors,
-    similar,
-    synopsis,
-    backdrop,
-    title,
-    poster,
-    tagline,
-    date,
-    runtime,
-    directors,
-    writers,
-  } = movie;
+    const { width } = Dimensions.get('window');
+    const posterWidth = width / 3;
+    const posterHeight = posterWidth * 1.55;
 
-  return (
-    <CustomScrollView
-      backgroundImage={backdrop}
-    >
-      <View
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 15,
-          paddingBottom: 25,
-        }}
+    return (
+      <CustomScrollView
+        backgroundImage={backdrop}
       >
         <View
           style={{
-            flex: 1,
-            flexDirection: 'row',
-            marginTop: -100,
+            paddingHorizontal: 10,
+            paddingVertical: 15,
+            paddingBottom: 25,
           }}
         >
-          <Image
-            source={{ uri: poster }}
+          <View
             style={{
-              borderColor: Color.White,
-              borderWidth: 2,
-              borderRadius: 6,
-              width: posterWidth,
-              height: posterHeight,
-              backgroundColor: Color.White,
+              flex: 1,
+              flexDirection: 'row',
+              marginTop: -100,
             }}
-          />
-          <Ratings ratings={ratings} />
+          >
+            <Image
+              source={{ uri: poster }}
+              style={{
+                borderColor: Color.White,
+                borderWidth: 2,
+                borderRadius: 6,
+                width: posterWidth,
+                height: posterHeight,
+                backgroundColor: Color.White,
+              }}
+            />
+            <Ratings ratings={ratings} />
+          </View>
+
+          <Text
+            style={{
+              paddingTop: 15,
+              fontFamily: 'metropolis-bold',
+              fontSize: 42,
+            }}
+            numberOfLines={3}
+          >
+            {title}
+          </Text>
+
+          {tagline.length > 0 && (
+            <Text
+              style={{
+                paddingTop: 5,
+                fontFamily: 'metropolis',
+                fontSize: 16,
+              }}
+              numberOfLines={2}
+            >
+              {tagline}
+            </Text>
+          )}
         </View>
+
+        <InfoText
+          infoTitle="Director"
+          infoContent={directors.map(item => item.name).join(', ')}
+        />
+
+        <InfoText
+          infoTitle="Writers"
+          infoContent={writers.map(item => item.name).join(', ')}
+        />
+
+        <InfoText
+          infoTitle="Release Date"
+          infoContent={moment(date).format('D MMM YYYY')}
+        />
+
+        <InfoText
+          infoTitle="Runtime"
+          infoContent={convertMinsToHrsMins(runtime)}
+        />
+
+        <SectionTitle title="Summary" />
 
         <Text
           style={{
-            paddingTop: 15,
-            fontFamily: 'metropolis-bold',
-            fontSize: 42,
+            paddingHorizontal: 10,
           }}
-          numberOfLines={3}
         >
-          {title}
+          {synopsis}
         </Text>
 
-        {tagline.length > 0 && (
-          <Text
-            style={{
-              paddingTop: 5,
-              fontFamily: 'metropolis',
-              fontSize: 16,
-            }}
-            numberOfLines={2}
-          >
-            {tagline}
-          </Text>
-        )}
-      </View>
+        <Videos videos={videos} />
 
-      <InfoText
-        infoTitle="Director"
-        infoContent={directors.map(item => item.name).join(', ')}
-      />
+        <CastList cast={actors} />
 
-      <InfoText
-        infoTitle="Writers"
-        infoContent={writers.map(item => item.name).join(', ')}
-      />
+        <MovieList
+          title="Similar Movies"
+          data={similar}
+        />
 
-      <InfoText
-        infoTitle="Release Date"
-        infoContent={moment(date).format('D MMM YYYY')}
-      />
-
-      <InfoText
-        infoTitle="Runtime"
-        infoContent={convertMinsToHrsMins(runtime)}
-      />
-
-      <SectionTitle title="Summary" />
-
-      <Text
-        style={{
-          paddingHorizontal: 10,
-        }}
-      >
-        {synopsis}
-      </Text>
-
-      <Videos videos={videos} />
-
-      <CastList cast={actors} />
-
-      <MovieList
-        title="Similar Movies"
-        data={similar}
-      />
-
-    </CustomScrollView>
-  );
-};
+      </CustomScrollView>
+    );
+  }
+}
 
 export default Movie;

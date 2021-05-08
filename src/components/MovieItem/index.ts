@@ -1,3 +1,4 @@
 import MovieItem from './MovieItem';
+import { withNavigation } from 'react-navigation';
 
-export default MovieItem;
+export default withNavigation(MovieItem);

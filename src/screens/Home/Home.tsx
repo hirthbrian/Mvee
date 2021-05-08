@@ -7,48 +7,53 @@ import Search from '../Search';
 
 import styles from './styles';
 
-const Home = ({
-  nowPlaying,
-  popular,
-  upcoming,
-  loading,
-  hideSearchModal,
-  showSearchModal,
-  isSearchModalVisible,
-  getHomepage,
-  navigation,
-}) => {
+class Home extends React.Component {
+  componentDidMount() {
+    const {
+      navigation,
+      showSearchModal,
+      getHomepage,
+    } = this.props;
 
-  useEffect(() => {
     navigation.setParams({ onSearchPress: showSearchModal });
     getHomepage();
-  }, []);
+  }
 
-  if (loading) return <Loading />;
-
-  const goToMovie = (id: number, title: string) => {
+  goToMovie = (id: number, title: string) => {
+    const {
+      navigation,
+      hideSearchModal,
+    } = this.props;
     hideSearchModal();
     navigation.navigate({ routeName: 'Movie', params: { id, title } });
   };
 
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}
-    >
-      <Search
-        goToMovie={goToMovie}
-      />
-      <ScrollView
-        style={styles.container}
+  render() {
+    const {
+      nowPlaying,
+      popular,
+      upcoming,
+    } = this.props;
+
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+        }}
       >
-        <MovieList title="Now Playing" data={nowPlaying} />
-        <MovieList title="Popular" data={popular} />
-        <MovieList title="Upcoming" data={upcoming} />
-      </ScrollView>
-    </SafeAreaView>
-  );
+        <Search
+          goToMovie={this.goToMovie}
+        />
+        <ScrollView
+          style={styles.container}
+        >
+          <MovieList title="Now Playing" data={nowPlaying} />
+          <MovieList title="Popular" data={popular} />
+          <MovieList title="Upcoming" data={upcoming} />
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 };
 
 export default Home;
