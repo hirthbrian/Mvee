@@ -7,6 +7,10 @@ interface Props {
   height: number;
 }
 
+export const Container = styled.ScrollView`
+  background-color: ${Color.White};
+`;
+
 export const BackgroundImage = styled.Image`
   width: ${(props: Props) => props.width}px;
   height: ${(props: Props) => props.height}px;

@@ -77,6 +77,7 @@ export const getMovieCredits = (id) =>
         .map((item) => ({
           id: item.id,
           name: item.name,
+          picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
         }));
 
       const writers = data.crew
@@ -84,6 +85,7 @@ export const getMovieCredits = (id) =>
         .map((item) => ({
           id: item.id,
           name: item.name,
+          picture: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
         }));
 
       return {

@@ -3,14 +3,13 @@ import { Text, useWindowDimensions, ScrollView } from "react-native";
 import moment from "moment";
 import { useRoute } from "@react-navigation/native";
 
-import { convertMinsToHrsMins } from "../../utils";
 import Loading from "../../components/Loading";
-import { Movies, Info } from "../../components";
-import CastList from "../../components/CastList";
+import { Movies, Info, Persons } from "../../components";
 import Videos from "../../components/Videos";
 import Ratings from "../../components/Ratings";
 
 import {
+  Container,
   BackgroundImage,
   TitleContainer,
   PosterContainer,
@@ -53,10 +52,8 @@ const Movie = () => {
   const posterWidth = width / 3;
   const posterHeight = posterWidth * 1.55;
 
-  console.log("runtime:", runtime);
-
   return (
-    <ScrollView>
+    <Container>
       <BackgroundImage
         width={width}
         height={width / 2}
@@ -71,27 +68,22 @@ const Movie = () => {
           />
           <Ratings ratings={ratings} />
         </PosterContainer>
-
         <Title numberOfLines={3}>{title}</Title>
-
         {tagline.length && <Tagline numberOfLines={2}>{tagline}</Tagline>}
       </TitleContainer>
-      <Info
-        title="Director"
-        content={directors.map((item) => item.name).join(", ")}
-      />
       <Info
         title="Writers"
         content={writers.map((item) => item.name).join(", ")}
       />
       <Info title="Release Date" content={moment(date).format("D MMM YYYY")} />
       <Info title="Runtime" content={`${runtime}min`} />
+      <Persons title="Director" persons={directors} />
       <SectionTitle title="Summary" />
       <Synopsis>{synopsis}</Synopsis>
       <Videos videos={videos} />
-      <CastList cast={actors} />
+      <Persons title="Casts" persons={actors} />
       <Movies title="Similar Movies" data={similar} />
-    </ScrollView>
+    </Container>
   );
 };
 
