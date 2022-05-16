@@ -19,11 +19,13 @@ import { getMovie } from "../../api/movie";
 
 const Movie = ({ navigation }) => {
   const route = useRoute();
-  const [movie, setMovie] = useState([]);
+  const [movie, setMovie] = useState(null);
 
   useEffect(() => {
     getMovie(route.params.id).then((data) => setMovie(data));
   }, []);
+
+  if (!movie) return null;
 
   const {
     ratings,

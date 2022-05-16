@@ -1,31 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
+import { useRoute } from "@react-navigation/native";
 
 import { Color } from "../../utils";
 import Loading from "../../components/Loading";
 import MovieList from "../../components/MovieList";
 import InfoText from "../../components/InfoText";
 import SectionTitle from "../../components/SectionTitle";
-import { RootState } from "../../redux/store";
-import { getCast } from "../../redux/features/castSlice";
+import { getCast } from "../../api/cast";
 
 const Cast = () => {
-  const cast = useSelector((state: RootState) => state.cast.cast);
-  const loading = useSelector((state: RootState) => state.cast.isFetching);
-  const dispatch = useDispatch();
+  const route = useRoute();
+  const [cast, setCast] = useState(null);
 
-  const { getParam } = useNavigation();
   const { width } = Dimensions.get("window");
   const creditWidth = width / 3;
   const creditHeight = (width / 3) * 1.55;
 
   useEffect(() => {
-    dispatch(getCast(getParam("id")));
+    getCast(route.params.id).then((data) => setCast(data));
   }, []);
 
-  if (loading) return <Loading />;
+  if (!cast) return null;
 
   const { name, picture, birthday, deathday, biography, credits } = cast;
 

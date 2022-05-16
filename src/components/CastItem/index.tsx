@@ -1,33 +1,26 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-} from 'react-native';
+import React from "react";
+import { View, Text, Image, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Color } from '../../utils';
-import Touchable from '../Touchable';
+import { Color } from "../../utils";
+import Touchable from "../Touchable";
 
-function CastItem({
+const CastItem = ({
   id,
   actorName,
   characterName,
   picture,
 }: {
-  id: number,
-  actorName: string,
-  characterName: string,
-  picture: string,
-}) {
-  const { navigate } = useNavigation();
-  const { width } = Dimensions.get('window');
+  id: number;
+  actorName: string;
+  characterName: string;
+  picture: string;
+}) => {
+  const navigation = useNavigation();
+  const { width } = Dimensions.get("window");
 
   return (
-    <Touchable
-      onPress={() => navigate({ routeName: 'Cast', params: { id } })}
-    >
+    <Touchable onPress={() => navigation.navigate("Cast", { id })}>
       <View
         style={{
           width: width / 4,
@@ -50,7 +43,7 @@ function CastItem({
           <Text
             style={{
               fontSize: 10,
-              textAlign: 'center',
+              textAlign: "center",
               color: Color.Black,
             }}
             numberOfLines={2}
@@ -60,7 +53,7 @@ function CastItem({
           <Text
             style={{
               fontSize: 10,
-              textAlign: 'center',
+              textAlign: "center",
               color: Color.LightBlack,
             }}
             numberOfLines={1}
@@ -71,6 +64,6 @@ function CastItem({
       </View>
     </Touchable>
   );
-}
+};
 
 export default CastItem;
