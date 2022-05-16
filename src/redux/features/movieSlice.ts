@@ -138,6 +138,7 @@ export const movieSlice = createSlice({
                 similar: values[3],
               };
               state.isFetching = false;
+              state.movie = movie;
             })
             .catch(() => {
               state.isFetching = false;

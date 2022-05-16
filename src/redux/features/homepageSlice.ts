@@ -56,7 +56,7 @@ export const homepageSlice = createSlice({
   name: "movie",
   initialState,
   reducers: {
-    getCast: (state) => {
+    getHomepage: (state) => {
       state.isFetching = true;
 
       const popular = getPopularMovies();
@@ -79,6 +79,6 @@ export const homepageSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { getCast } = homepageSlice.actions;
+export const { getHomepage } = homepageSlice.actions;
 
 export default homepageSlice.reducer;

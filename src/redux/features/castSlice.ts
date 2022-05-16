@@ -90,6 +90,7 @@ export const castSlice = createSlice({
                 gallery: values[1],
               };
               state.isFetching = false;
+              state.cast = cast;
             })
             .catch(() => {
               state.isFetching = false;

@@ -1,50 +1,41 @@
-import React, { useEffect } from 'react';
-import { useNavigation } from 'react-navigation-hooks';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
-import { Color } from '../../utils';
-import Loading from '../../components/Loading';
-import MovieList from '../../components/MovieList';
-import InfoText from '../../components/InfoText';
-import SectionTitle from '../../components/SectionTitle';
+import React, { useEffect } from "react";
+import { View, Text, Image, Dimensions, ScrollView } from "react-native";
+import { useNavigation } from "react-navigation-hooks";
+import { useDispatch, useSelector } from "react-redux";
 
-function Cast({
-  cast,
-  loading,
-  getCast,
-}) {
+import { Color } from "../../utils";
+import Loading from "../../components/Loading";
+import MovieList from "../../components/MovieList";
+import InfoText from "../../components/InfoText";
+import SectionTitle from "../../components/SectionTitle";
+import { RootState } from "../../redux/store";
+import { getCast } from "../../redux/features/castSlice";
+
+const Cast = () => {
+  const cast = useSelector((state: RootState) => state.cast.cast);
+  const loading = useSelector((state: RootState) => state.cast.isFetching);
+  const dispatch = useDispatch();
+
   const { getParam } = useNavigation();
-  const { width } = Dimensions.get('window');
+  const { width } = Dimensions.get("window");
   const creditWidth = width / 3;
   const creditHeight = (width / 3) * 1.55;
 
   useEffect(() => {
-    getCast(getParam('id'));
+    dispatch(getCast(getParam("id")));
   }, []);
 
   if (loading) return <Loading />;
 
-  const {
-    name,
-    picture,
-    birthday,
-    deathday,
-    biography,
-    credits,
-  } = cast;
+  const { name, picture, birthday, deathday, biography, credits } = cast;
 
   return (
     <ScrollView>
       <View
         style={{
           padding: 10,
-          flexDirection: 'row',
-          alignItems: 'flex-end',
+          flexDirection: "row",
+          alignItems: "flex-end",
         }}
       >
         <Image
@@ -73,7 +64,7 @@ function Cast({
         style={{
           padding: 10,
           fontSize: 38,
-          fontFamily: 'metropolis-bold',
+          fontFamily: "metropolis-bold",
         }}
       >
         {name}
@@ -90,13 +81,9 @@ function Cast({
         {biography}
       </Text>
 
-      <MovieList
-        title="Filmography"
-        data={credits.cast}
-      />
-
+      <MovieList title="Filmography" data={credits.cast} />
     </ScrollView>
   );
-}
+};
 
 export default Cast;

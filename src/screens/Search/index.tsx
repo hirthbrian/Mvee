@@ -1,27 +1,23 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  TextInput,
-} from 'react-native';
-import Modal from 'react-native-modal';
-import SearchItem from '../../components/SearchItem';
-import { Color } from '../../utils';
+import React, { useState } from "react";
+import { View, Text, Image, FlatList, TextInput } from "react-native";
+import Modal from "react-native-modal";
+import { useDispatch, useSelector } from "react-redux";
 
-import styles from './styles';
+import SearchItem from "../../components/SearchItem";
+import { hideSearchModal } from "../../redux/features/searchSlice";
+import { RootState } from "../../redux/store";
+import { Color } from "../../utils";
 
-const searchIcon = require('../../assets/img/search.png');
+import styles from "./styles";
 
-const Search = ({
-  search,
-  isVisible,
-  goToMovie,
-  searchResults,
-  hideSearchModal,
-}) => {
-  const [searchText, setSearchText] = useState('');
+const searchIcon = require("../../assets/img/search.png");
+
+const Search = () => {
+  const dispatch = useDispatch();
+  const searchResults = useSelector((state: RootState) => state.search.results);
+  const isVisible = useSelector((state: RootState) => state.search.isSearchModalVisible);
+
+  const [searchText, setSearchText] = useState("");
 
   const renderItem = ({ item }) => (
     <SearchItem
@@ -30,7 +26,7 @@ const Search = ({
       year={item.year}
       posterImage={item.poster}
       voteAverage={item.voteAverage}
-      onPress={goToMovie}
+      onPress={() => {}}
     />
   );
 
@@ -39,13 +35,13 @@ const Search = ({
       useNativeDriver
       isVisible={isVisible}
       style={styles.modalContainer}
-      onBackdropPress={hideSearchModal}
+      onBackdropPress={() => dispatch(hideSearchModal())}
     >
       <View
         style={{
           padding: 10,
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: "center",
+          justifyContent: "center",
           backgroundColor: Color.Red,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
@@ -68,9 +64,7 @@ const Search = ({
           backgroundColor: Color.Red,
         }}
       >
-        <View
-          style={styles.searchBarContainer}
-        >
+        <View style={styles.searchBarContainer}>
           <Image
             source={searchIcon}
             style={{
@@ -82,7 +76,7 @@ const Search = ({
           <TextInput
             autoFocus
             onChangeText={setSearchText}
-            onEndEditing={() => search(searchText)}
+            onEndEditing={() => dispatch(search(searchText))}
             value={searchText}
             // placeholderTextColor={Color.Red}
             placeholder="Search for movies..."
