@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, Dimensions } from "react-native";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import { useRoute } from "@react-navigation/native";
 
 import CustomScrollView from "../../components/CustomScrollView";
 import { Color, convertMinsToHrsMins } from "../../utils";
@@ -15,15 +15,14 @@ import InfoText from "../../components/InfoText";
 
 import styles from "./styles";
 import SectionTitle from "../../components/SectionTitle";
-import { RootState } from "../../redux/store";
-import { getMovie } from "../../redux/features/movieSlice";
+import { getMovie } from "../../api/movie";
 
-const Movie = () => {
-  const movie = useSelector((state: RootState) => state.movie.movie);
-  const dispatch = useDispatch();
+const Movie = ({ navigation }) => {
+  const route = useRoute();
+  const [movie, setMovie] = useState([]);
 
   useEffect(() => {
-    dispatch(getMovie(navigation.getParam("id")));
+    getMovie(route.params.id).then((data) => setMovie(data));
   }, []);
 
   const {

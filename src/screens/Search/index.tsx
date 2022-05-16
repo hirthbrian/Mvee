@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 import { useDispatch, useSelector } from "react-redux";
 
 import SearchItem from "../../components/SearchItem";
-import { hideSearchModal } from "../../redux/features/searchSlice";
+import { hideSearchModal, search } from "../../redux/features/searchSlice";
 import { RootState } from "../../redux/store";
 import { Color } from "../../utils";
 
@@ -12,10 +12,12 @@ import styles from "./styles";
 
 const searchIcon = require("../../assets/img/search.png");
 
-const Search = () => {
+const Search = ({ goToMovie }) => {
   const dispatch = useDispatch();
   const searchResults = useSelector((state: RootState) => state.search.results);
-  const isVisible = useSelector((state: RootState) => state.search.isSearchModalVisible);
+  const isVisible = useSelector(
+    (state: RootState) => state.search.isSearchModalVisible
+  );
 
   const [searchText, setSearchText] = useState("");
 
@@ -26,7 +28,7 @@ const Search = () => {
       year={item.year}
       posterImage={item.poster}
       voteAverage={item.voteAverage}
-      onPress={() => {}}
+      onPress={goToMovie}
     />
   );
 

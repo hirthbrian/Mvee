@@ -1,31 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 
 import MovieList from "../../components/MovieList";
 import Loading from "../../components/Loading";
 import Search from "../Search";
 
 import styles from "./styles";
-import { RootState } from "../../redux/store";
-import { getHomepage } from "../../redux/features/homepageSlice";
+import { getHomepage } from "../../api/movie";
 
 const Home = () => {
-  const nowPlaying = useSelector(
-    (state: RootState) => state.homepage.nowPlaying
-  );
-  const popular = useSelector((state: RootState) => state.homepage.popular);
-  const upcoming = useSelector((state: RootState) => state.homepage.upcoming);
-  const dispatch = useDispatch();
+  const [nowPlaying, setNowPlaying] = useState([]);
+  const [popular, setPopular] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
 
   useEffect(() => {
-    dispatch(getHomepage());
+    getHomepage()
+      .then((values) => {
+        setPopular(values[0]);
+        setUpcoming(values[1]);
+        setNowPlaying(values[2]);
+      })
+      .catch((error) => {
+        console.log("error", error.message);
+      });
   }, []);
 
   const goToMovie = (id: number, title: string) => {
-    const { navigation, hideSearchModal } = this.props;
-    hideSearchModal();
-    navigation.navigate({ routeName: "Movie", params: { id, title } });
+    // const { navigation, hideSearchModal } = this.props;
+    // hideSearchModal();
+    // navigation.navigate({ routeName: "Movie", params: { id, title } });
   };
 
   return (

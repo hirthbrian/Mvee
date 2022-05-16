@@ -54,7 +54,7 @@ export const searchSlice = createSlice({
     showSearchModal: (state) => {
       state.isSearchModalVisible = true;
     },
-    hideSearchModal: (state, action: PayloadAction<number>) => {
+    hideSearchModal: (state) => {
       state.isSearchModalVisible = false;
     },
   },

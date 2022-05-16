@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, Image, Dimensions, ScrollView } from "react-native";
-import { useNavigation } from "react-navigation-hooks";
+import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Color } from "../../utils";

@@ -8,6 +8,8 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.0.10",
+    "@react-navigation/native-stack": "^6.6.2",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.27.1",
     "expo": "^45.0.0",
@@ -23,12 +25,10 @@
     "react-native-modal": "^11.4.0",
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-native-reanimated": "~2.8.0",
+    "react-native-safe-area-context": "4.2.4",
     "react-native-screens": "~3.11.1",
     "react-native-snap-carousel": "^3.7.5",
     "react-native-web": "0.17.7",
-    "react-navigation": "^4.0.10",
-    "react-navigation-hooks": "^1.1.0",
-    "react-navigation-stack": "^1.10.3",
     "react-redux": "^8.0.1"
   },
   "devDependencies": {

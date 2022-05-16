@@ -1,11 +1,12 @@
 import React from 'react';
-import { useNavigation } from 'react-navigation-hooks';
 import {
   View,
   Text,
   Image,
   Dimensions,
 } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+
 import { Color } from '../../utils';
 import Touchable from '../Touchable';
 
