@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView } from "react-native";
 
-import MovieList from "../../components/MovieList";
+import Movies from "../../components/Movies";
 import Loading from "../../components/Loading";
 import Search from "../Search";
 
@@ -35,9 +35,9 @@ const Home = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Search goToMovie={goToMovie} />
       <ScrollView style={styles.container}>
-        <MovieList title="Now Playing" data={nowPlaying} />
-        <MovieList title="Popular" data={popular} />
-        <MovieList title="Upcoming" data={upcoming} />
+        <Movies title="Now Playing" data={nowPlaying} />
+        <Movies title="Popular" data={popular} />
+        <Movies title="Upcoming" data={upcoming} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,9 +1,8 @@
 import React from "react";
-import { View, Text, Image, Dimensions } from "react-native";
+import { View, Text, Image, Dimensions, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Color } from "../../utils";
-import Touchable from "../Touchable";
 
 const CastItem = ({
   id,
@@ -20,7 +19,7 @@ const CastItem = ({
   const { width } = Dimensions.get("window");
 
   return (
-    <Touchable onPress={() => navigation.navigate("Cast", { id })}>
+    <Pressable onPress={() => navigation.navigate("Cast", { id })}>
       <View
         style={{
           width: width / 4,
@@ -62,7 +61,7 @@ const CastItem = ({
           </Text>
         </View>
       </View>
-    </Touchable>
+    </Pressable>
   );
 };
 

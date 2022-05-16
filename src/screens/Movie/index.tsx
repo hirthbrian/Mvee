@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, Dimensions } from "react-native";
+import { Text, useWindowDimensions, ScrollView } from "react-native";
 import moment from "moment";
 import { useRoute } from "@react-navigation/native";
 
-import CustomScrollView from "../../components/CustomScrollView";
-import { Color, convertMinsToHrsMins } from "../../utils";
+import { convertMinsToHrsMins } from "../../utils";
 import Loading from "../../components/Loading";
-import MovieList from "../../components/MovieList";
+import { Movies, Info } from "../../components";
 import CastList from "../../components/CastList";
 import Videos from "../../components/Videos";
 import Ratings from "../../components/Ratings";
-import Summary from "../../components/Summary";
-import InfoText from "../../components/InfoText";
 
-import styles from "./styles";
+import {
+  BackgroundImage,
+  TitleContainer,
+  PosterContainer,
+  Poster,
+  Title,
+  Tagline,
+  Synopsis,
+} from "./styles";
 import SectionTitle from "../../components/SectionTitle";
 import { getMovie } from "../../api/movie";
+import { MovieType } from "../../types";
 
-const Movie = ({ navigation }) => {
+const Movie = () => {
   const route = useRoute();
-  const [movie, setMovie] = useState(null);
+  const { width } = useWindowDimensions();
+  const [movie, setMovie] = useState<MovieType | undefined>();
 
   useEffect(() => {
-    getMovie(route.params.id).then((data) => setMovie(data));
+    getMovie(route?.params?.id).then((data) => setMovie(data));
   }, []);
 
   if (!movie) return null;
@@ -43,92 +50,48 @@ const Movie = ({ navigation }) => {
     writers,
   } = movie;
 
-  const { width } = Dimensions.get("window");
   const posterWidth = width / 3;
   const posterHeight = posterWidth * 1.55;
 
+  console.log("runtime:", runtime);
+
   return (
-    <CustomScrollView backgroundImage={backdrop}>
-      <View
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 15,
-          paddingBottom: 25,
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            marginTop: -100,
-          }}
-        >
-          <Image
+    <ScrollView>
+      <BackgroundImage
+        width={width}
+        height={width / 2}
+        source={{ uri: backdrop }}
+      />
+      <TitleContainer>
+        <PosterContainer>
+          <Poster
+            width={posterWidth}
+            height={posterHeight}
             source={{ uri: poster }}
-            style={{
-              borderColor: Color.White,
-              borderWidth: 2,
-              borderRadius: 6,
-              width: posterWidth,
-              height: posterHeight,
-              backgroundColor: Color.White,
-            }}
           />
           <Ratings ratings={ratings} />
-        </View>
+        </PosterContainer>
 
-        <Text
-          style={{
-            paddingTop: 15,
-            fontFamily: "metropolis-bold",
-            fontSize: 42,
-          }}
-          numberOfLines={3}
-        >
-          {title}
-        </Text>
+        <Title numberOfLines={3}>{title}</Title>
 
-        {tagline.length > 0 && (
-          <Text
-            style={{
-              paddingTop: 5,
-              fontFamily: "metropolis",
-              fontSize: 16,
-            }}
-            numberOfLines={2}
-          >
-            {tagline}
-          </Text>
-        )}
-      </View>
-      <InfoText
-        infoTitle="Director"
-        infoContent={directors.map((item) => item.name).join(", ")}
+        {tagline.length && <Tagline numberOfLines={2}>{tagline}</Tagline>}
+      </TitleContainer>
+      <Info
+        title="Director"
+        content={directors.map((item) => item.name).join(", ")}
       />
-      <InfoText
-        infoTitle="Writers"
-        infoContent={writers.map((item) => item.name).join(", ")}
+      <Info
+        title="Writers"
+        content={writers.map((item) => item.name).join(", ")}
       />
-      <InfoText
-        infoTitle="Release Date"
-        infoContent={moment(date).format("D MMM YYYY")}
-      />
-      <InfoText
-        infoTitle="Runtime"
-        infoContent={convertMinsToHrsMins(runtime)}
-      />
+      <Info title="Release Date" content={moment(date).format("D MMM YYYY")} />
+      <Info title="Runtime" content={`${runtime}min`} />
       <SectionTitle title="Summary" />
-      <Text
-        style={{
-          paddingHorizontal: 10,
-        }}
-      >
-        {synopsis}
-      </Text>
+      <Synopsis>{synopsis}</Synopsis>
       <Videos videos={videos} />
       <CastList cast={actors} />
-      <MovieList title="Similar Movies" data={similar} />
-    </CustomScrollView>
+      <Movies title="Similar Movies" data={similar} />
+    </ScrollView>
   );
 };
 

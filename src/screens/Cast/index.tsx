@@ -4,8 +4,8 @@ import { useRoute } from "@react-navigation/native";
 
 import { Color } from "../../utils";
 import Loading from "../../components/Loading";
-import MovieList from "../../components/MovieList";
-import InfoText from "../../components/InfoText";
+import Movies from "../../components/Movies";
+import { Info } from "../../components";
 import SectionTitle from "../../components/SectionTitle";
 import { getCast } from "../../api/cast";
 
@@ -51,8 +51,8 @@ const Cast = () => {
             paddingLeft: 10,
           }}
         >
-          <InfoText infoTitle="Born" infoContent={birthday} />
-          {deathday && <InfoText infoTitle="Died" infoContent={deathday} />}
+          <Info title="Born" content={birthday} />
+          {deathday && <Info title="Died" content={deathday} />}
         </View>
       </View>
 
@@ -77,7 +77,7 @@ const Cast = () => {
         {biography}
       </Text>
 
-      <MovieList title="Filmography" data={credits.cast} />
+      <Movies title="Filmography" data={credits.cast} />
     </ScrollView>
   );
 };
