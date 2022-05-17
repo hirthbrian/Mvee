@@ -3,7 +3,7 @@ import { SafeAreaView, ScrollView } from "react-native";
 
 import Movies from "../../components/Movies";
 import Loading from "../../components/Loading";
-import Search from "../Search";
+import { SearchBar } from "../../components";
 
 import styles from "./styles";
 import { getHomepage } from "../../api/movie";
@@ -33,7 +33,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Search goToMovie={goToMovie} />
+      <SearchBar />
       <ScrollView style={styles.container}>
         <Movies title="Now Playing" data={nowPlaying} />
         <Movies title="Popular" data={popular} />
