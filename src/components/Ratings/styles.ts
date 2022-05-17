@@ -1,10 +1,6 @@
-import { StyleSheet } from 'react-native';
+import styled from "styled-components";
 
-import { Color } from '../../utils';
-
-export default StyleSheet.create({
-  detailBlock: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-});
+export const Container = styled.View`
+  flex: 1;
+  justify-content: flex-end;
+`;
